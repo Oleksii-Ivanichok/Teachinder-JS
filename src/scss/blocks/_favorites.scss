@@ -1,0 +1,64 @@
+.favorites {
+    margin-top: 40px;
+}
+
+.favorites__grid {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    grid-template-columns: 1fr 10fr 1fr;
+}
+
+.favorites__arrow {
+    width: 20px;
+    transition: all 1s;
+    &:hover{
+        filter: brightness(0%);
+    }
+}
+
+.favorites__arrow-right {
+    transform: rotate(180deg);
+}
+
+.favorites__grid-list {
+    //display: grid;
+    //grid-template-columns: repeat(5, 2fr);
+    //gap: 50px;
+    .teacher__card{
+        &:nth-child(5){
+            @media screen and (max-width: 1000px){
+                display: none;
+            }
+        }
+        &:nth-child(4){
+            @media screen and (max-width: 800px){
+                display: none;
+            }
+        }
+        &:nth-child(3){
+            @media screen and (max-width: 610px){
+                display: none;
+            }
+        }
+        &:nth-child(2){
+            @media screen and (max-width: 420px){
+                display: none;
+            }
+        }
+    }
+    display: flex;
+    gap: 50px;
+    justify-content: space-between;
+    //flex-wrap: nowrap;
+    //overflow: hidden;
+}
+
+.teacher__card-img {
+}
+
+.teacher__card-name {
+}
+
+.teacher__card-country {
+}
