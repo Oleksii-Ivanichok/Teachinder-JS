@@ -1,0 +1,51 @@
+.teacher-info__popup{
+    max-width: 950px;
+    color: $gray;
+    background: $white;
+}
+.teacher-info__content{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 30px;
+}
+.teacher-info__content-top-row{
+    display: flex;
+    gap: 40px;
+}
+.teacher-info__block{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.teacher-info__block-text{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.teacher-info__img{
+    max-width: 320px;
+    display: inline-block;
+}
+.teacher-info__title{
+    color: $black;
+    font-size: 36px;
+}
+.teacher-info__subject{
+    color: $black;
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: 700;
+}
+.teacher-info__email{
+    color: #2899A7;
+}
+.teacher-info__map{
+    color: #2899A7;
+    border-bottom: 1.5px dashed #2899A7;
+    display: inline-block;
+}
+.teacher-info__add-to-favorite{
+    width: 45px;
+}

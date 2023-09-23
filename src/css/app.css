@@ -1,5 +1,5 @@
 /* Import fonts */
-@import url('../fonts/Roboto.css');
-
+/*@import url('../fonts/Roboto.css');*/
+@import url('../scss/style.css');
 /* Reset and normalize */
-@import url('./normalize.css');
+/*@import url('./normalize.css');*/
