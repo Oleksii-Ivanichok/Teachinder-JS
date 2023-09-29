@@ -103,30 +103,85 @@ function mergeAndFormatUser(randomUserListMock, additionalUsersList) {
   return users;
 }
 
-const users = mergeAndFormatUser(randomUserMock, additionalUsers);
+let users = mergeAndFormatUser(randomUserMock, additionalUsers);
+
 console.log(users);
 
 // task2
 console.log('task 2');
+const correctUser = {
+  "gender": "Male",
+  "title": "Mr",
+  "full_name": "Oleksii Ivanichok",
+  "city": "Kyiv",
+  "state": "Kyiv",
+  "country": "Ukraine",
+  "postcode": 4919,
+  "coordinates": {
+    "latitude": "-73.3324",
+    "longitude": "-63.8552"
+  },
+  "timezone": {
+    "offset": "+7:00",
+    "description": "Bangkok, Hanoi, Jakarta"
+  },
+  "email": "oleksii.ivanichok@gmail.com",
+  "b_date": "1994-07-04T12:08:05.427Z",
+  "age": 19,
+  "phone": "+380678842837",
+  "picture_large": "https://randomuser.me/api/portraits/men/51.jpg",
+  "picture_thumbnail": "https://randomuser.me/api/portraits/thumb/men/51.jpg",
+  "id": "756.2023.5649.57",
+  "bg_color": "#000000",
+  "favorite": false,
+  "note": "Note",
+  "course": "Chemistry"
+}
+// users.push(correctUser);
 
 function validateUsers(usersToValidate) {
-  const regExpWord = /^[A-Z]/;
-  const regExpEmail = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+  // const regExpEmail = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   const schema = {
-    // gender: value => regExpWord.test(value),
-    full_name: (value) => regExpWord.test(value),
-    city: (value) => regExpWord.test(value),
-    state: (value) => regExpWord.test(value),
-    note: (value) => regExpWord.test(value),
+    full_name: (value) => isFirstLetterUpperCase(value),
+    city: (value) => isFirstLetterUpperCase(value),
+    state: (value) => isFirstLetterUpperCase(value),
+    country: (value) => isFirstLetterUpperCase(value),
+    note: (value) => isFirstLetterUpperCase(value),
     age: (value) => Number.isInteger(value) && value > 0,
-    email: (value) => regExpEmail.test(value),
-    phone: (value) => value !== '',
+    email: (value) => value.includes("@"),
+    // gender: (value) => isFirstLetterUpperCase(value),
+    // phone: (value, user) => validatePhone(value, user.country),
   };
+  function isFirstLetterUpperCase(str) {
+    if (typeof str !== 'string' || str.length === 0) {
+      return false;
+    }
+
+    const firstLetter = str.charAt(0);
+    return firstLetter === firstLetter.toUpperCase();
+  }
+
+  function validatePhone(phone, country) {
+    const countryToPhoneCode = {
+      'United States': '+1',
+      'United Kingdom': '+44',
+      'Australia': '+61',
+      'Germany': '+49',
+      'Ukraine': '+380',
+    };
+    const expectedPhoneCode = countryToPhoneCode[country];
+    if(expectedPhoneCode !== undefined){
+      const phoneCodeLength = expectedPhoneCode.length;
+      const providedPhoneCode = phone.substring(0, phoneCodeLength);
+      return providedPhoneCode === expectedPhoneCode;
+    }
+    return false;
+  }
 
   function validate(user) {
     return Object
       .keys(schema)
-      .filter((key) => !schema[key](user[key]))
+      .filter((key) => !schema[key](user[key], user))
       .map((key) => new Error(`${key}: ${user[key]} is invalid.`));
   }
 
@@ -137,14 +192,16 @@ function validateUsers(usersToValidate) {
   function isValidUser(user) {
     return Object
       .keys(schema)
-      .every((key) => schema[key](user[key]));
+      .every((key) => schema[key](user[key], user));
   }
 
   const validUsers = usersToValidate.filter((user) => isValidUser(user));
   return validUsers;
 }
 
+
 const validUsers = validateUsers(users);
+users = validUsers;
 console.log('validUsers:');
 console.log(validUsers);
 
