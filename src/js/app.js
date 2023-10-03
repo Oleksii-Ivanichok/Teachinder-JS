@@ -261,7 +261,7 @@ function searchUsers(usersToSearch, query) {
 
   usersToSearch.forEach((user) => {
     const matches = ['full_name', 'note', 'age'].some((param) => {
-      if (Object.prototype.hasOwnProperty.call(user, param)) {
+      if (param in user) {
         const paramValue = user[param].toString().toLowerCase();
         return paramValue.includes(queryToLower);
       }
