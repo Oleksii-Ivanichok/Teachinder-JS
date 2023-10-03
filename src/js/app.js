@@ -210,16 +210,19 @@ console.log('task 3');
 
 // users.map(user => console.log(user.country === true))
 
-function filterUsers(usersToFilter, country = null, age = null, gender = null, favorite = null) {
+function filterUsers(usersToFilter, country, age, gender, favorite) {
+  const ageArray = age.split("-");
+  const startAge =  parseInt(ageArray[0]);
+  const endAge =  parseInt(ageArray[1]);
   const filteredUsers = usersToFilter
-    .filter((user) => (country === null || user.country === country)
-    && (age === null || user.age === age)
-    && (gender === null || user.gender === gender)
-    && (favorite === null || user.favorite === favorite));
+    .filter((user) => (country === 'any' || user.country === country)
+      && (age === 'any' || user.age >= startAge && user.age <= endAge)
+      && (gender === 'any' || user.gender === gender)
+      && (favorite === false || user.favorite === favorite));
   return (filteredUsers);
 }
 
-const filteredUsers = filterUsers(users, 'Germany', 35, 'female', false);
+const filteredUsers = filterUsers(users, 'Germany', '18-80', 'female', false);
 console.log(filteredUsers);
 
 // task4
