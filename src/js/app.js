@@ -254,29 +254,31 @@ console.log(sortedUsers);
 // task5
 console.log('task 5');
 
-function searchUsers(usersToSearch, searchBy, query) {
+function searchUsers(usersToSearch, query) {
   const queryToLower = query.toLowerCase();
-  const searchedUsers = usersToSearch.filter((user) => {
-    if (Object.prototype.hasOwnProperty.call(user, searchBy)) {
-      const paramValue = user[searchBy].toLowerCase();
-      if (typeof paramValue === 'string') {
-        // Якщо параметр - рядок, перевіряємо на часткове співпадіння
+
+  const searchedUsers = [];
+
+  usersToSearch.forEach((user) => {
+    const matches = ['full_name', 'note', 'age'].some((param) => {
+      if (Object.prototype.hasOwnProperty.call(user, param)) {
+        const paramValue = user[param].toString().toLowerCase();
         return paramValue.includes(queryToLower);
       }
-      if (typeof paramValue === 'number') {
-        // Якщо параметр - число, перевіряємо на часткове співпадіння, перетворюючи число на рядок
-        return paramValue.toString().includes(queryToLower.toString());
-      }
+      return false;
+    });
+
+    if (matches) {
+      searchedUsers.push(user);
     }
-    return false;
   });
+
   return searchedUsers;
 }
 
-const searchByParam = 'full_name';
-const searchQuery = 'Aa';
+const searchQuery = '27';
 
-const searchedUsers = searchUsers(users, searchByParam, searchQuery);
+const searchedUsers = searchUsers(users, searchQuery);
 console.log(searchedUsers);
 
 // task 6
@@ -290,7 +292,7 @@ function findSearchPercent(usersToCompare, searchedUsersToCompare) {
   return 0;
 }
 
-const searchPercent = findSearchPercent(users, searchUsers(users, searchByParam, searchQuery));
+const searchPercent = findSearchPercent(users, searchUsers(users, searchQuery));
 console.log(`${searchPercent}%`);
 
 // console.log('users:')
