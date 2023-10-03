@@ -1,5 +1,6 @@
 .teacher-info__popup{
     max-width: 950px;
+    width: 100%;
     color: $gray;
     background: $white;
 }
@@ -25,7 +26,8 @@
     gap: 20px;
 }
 .teacher-info__img{
-    max-width: 320px;
+    width: 320px;
+    height: 320px;
     display: inline-block;
 }
 .teacher-info__title{

@@ -450,7 +450,7 @@ body {
 .statistics__table th:hover::after {
   opacity: 1;
 }
-.statistics__table tr:nth-child(3) {
+.statistics__table thead tr:nth-child(3) {
   border-top: 1px solid #000;
 }
 .statistics__table tr:nth-child(odd) {
@@ -639,6 +639,7 @@ body {
 
 .teacher-info__popup {
   max-width: 950px;
+  width: 100%;
   color: #818181;
   background: #FFF;
 }
@@ -669,7 +670,8 @@ body {
 }
 
 .teacher-info__img {
-  max-width: 320px;
+  width: 320px;
+  height: 320px;
   display: inline-block;
 }
 
