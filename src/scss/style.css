@@ -366,6 +366,9 @@ body {
 }
 
 .teacher__card-img-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
   width: 150px;
   height: 150px;

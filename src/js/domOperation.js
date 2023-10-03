@@ -1,10 +1,11 @@
 import {filterUsers, sortUsers} from "./userOperation";
 
-export function renderUser(usersToRender) {
+export function renderUser(usersToRender, addToEnd = false) {
   const userContainer = document.getElementById('top-teachers-container');
   let userHTML = '';
   usersToRender.forEach((user) => {
     let starSrc;
+    let userPic = user.picture_large || '';
     if (user.favorite) {
       starSrc = 'images/star.svg'
     } else {
@@ -13,16 +14,19 @@ export function renderUser(usersToRender) {
     userHTML += `
         <div class="teacher__card" data-teacher-email="${user.email}" >
             <div class="teacher__card-img-box" >
-                <img class="teacher__card-img" src="${user.picture_large}" alt="${user.full_name}">
+                <img class="teacher__card-img" src="${userPic}" alt="${user.full_name}">
             </div>
         <img class="teacher__card-favorite" src="${starSrc}" alt="" >
         <p class="teacher__card-name">${user.full_name}</p>
             <p class="teacher__card-subject">${user.course}</p>
             <p class="teacher__card-country">${user.country}</p>
         </div>`;
-    // userContainer.insertAdjacentHTML('beforeend', userHTML);
   })
-  userContainer.innerHTML = userHTML;
+  if(addToEnd){
+    userContainer.insertAdjacentHTML('beforeend', userHTML);
+  } else{
+    userContainer.innerHTML = userHTML;
+  }
 }
 
 export function teacherInfoPopUp(usersToShow) {
@@ -139,7 +143,7 @@ export function filterStatistics(usersToSort) {
   const sortByNationality = document.getElementById("statisticsSortByNationality");
 
   let sortByNameToggle = true;
-  sortByName.addEventListener("click", ()=> {
+  sortByName.addEventListener("click", () => {
     sortByNameToggle = !sortByNameToggle;
     applySort('full_name', sortByNameToggle)
   });
@@ -199,7 +203,8 @@ export function renderStatistics(usersToRender) {
   })
   statisticContainer.innerHTML = userStatisticHTML;
 }
-export function addTeacher() {
+
+export function addTeacher(usersToExpand) {
   const popUpContainer = document.getElementById('popUpContainer');
   const addTeacherButtons = document.querySelectorAll('.add-teacher-button')
   addTeacherButtons.forEach(button => {
@@ -210,8 +215,8 @@ export function addTeacher() {
     <div class="add-teacher__popup">
         <div class="add-teacher__title">
             <h3 class="title-3">Add Teacher</h3>
-            <button>
-                <img src="images/x.svg" alt="close" class="img-x" id="closeButton">
+            <button id="closeButton">
+                <img src="images/x.svg" alt="close" class="img-x">
             </button>
         </div>
         <form class="add-teacher__form">
@@ -276,9 +281,45 @@ export function addTeacher() {
                 <textarea id="add-teacher-notes" name="notes"></textarea>
             </div>
 
-            <button class="add-teacher__button button">Add</button>
+            <button class="add-teacher__button button" id="add-new-teacher">Add</button>
         </form>
     </div>`;
+
+        const addNewTeacherButton = document.getElementById('add-new-teacher');
+        addNewTeacherButton.addEventListener('click', (event) => {
+          event.preventDefault();
+          const name = document.getElementById("add-teacher-name").value;
+          const speciality = document.getElementById("add-teacher-speciality").value;
+          const country = document.getElementById("add-teacher-country").value;
+          const city = document.getElementById("add-teacher-city").value;
+          const email = document.getElementById("add-teacher-email").value;
+          const phone = document.getElementById("add-teacher-phone").value;
+          const birthdate = document.getElementById("add-teacher-birthdate").value;
+          const sex = document.querySelector('input[name="sex"]:checked').value;
+          const color = document.getElementById("color").value;
+          const notes = document.getElementById("add-teacher-notes").value;
+
+          const newTeacher = {
+            'full_name': name,
+            'course': speciality,
+            'country': country,
+            'city' :city,
+            'email': email,
+            'phone': phone,
+            'b_date': birthdate,
+            "gender": sex,
+            'bg_color': color,
+            'note': notes || 'Note',
+          };
+          // console.log([newTeacher])
+          usersToExpand.push(newTeacher);
+          renderUser([newTeacher], true);
+          renderStatistics(usersToExpand);
+
+          popUpContainer.innerHTML = '';
+          popUpContainer.classList.toggle("none");
+          document.body.classList.toggle("body-overflow");
+        })
         const closeButton = document.getElementById("closeButton");
         closeButton.addEventListener('click', () => {
           popUpContainer.innerHTML = '';
@@ -289,5 +330,12 @@ export function addTeacher() {
       })
     }
   )
+}
 
+export function renderSearchUsers(userToSearch){
+  const searchInput = document.getElementById('teacherSearchInput');
+  const searchButton = document.getElementById('teacherSearchButton');
+  searchButton.addEventListener('click', () => {
+
+  })
 }

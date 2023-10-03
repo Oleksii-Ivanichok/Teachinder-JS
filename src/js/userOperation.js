@@ -154,7 +154,7 @@ export function filterUsers(usersToFilter, country, age, gender, favorite) {
   const endAge =  parseInt(ageArray[1]);
   const filteredUsers = usersToFilter
     .filter((user) => (country === 'any' || user.country === country)
-      && (age === 'any' || user.age > startAge && user.age < endAge)
+      && (age === 'any' || user.age >= startAge && user.age <= endAge)
       && (gender === 'any' || user.gender === gender)
       && (favorite === false || user.favorite === favorite));
   return (filteredUsers);

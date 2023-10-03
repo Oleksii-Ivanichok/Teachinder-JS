@@ -60,7 +60,7 @@ function main(){
   filterTeachers(users);
   renderStatistics(users);
   filterStatistics(users);
-  addTeacher();
+  addTeacher(users);
   // task3
   console.log('task 3');
 
