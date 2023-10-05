@@ -512,6 +512,9 @@ body {
   gap: 50px;
   justify-content: space-between;
 }
+.favorites__grid-list .teacher__card:nth-child(n+6) {
+  display: none;
+}
 @media screen and (max-width: 1000px) {
   .favorites__grid-list .teacher__card:nth-child(5) {
     display: none;

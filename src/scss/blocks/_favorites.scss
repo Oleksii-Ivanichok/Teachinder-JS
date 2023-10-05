@@ -26,6 +26,9 @@
     //grid-template-columns: repeat(5, 2fr);
     //gap: 50px;
     .teacher__card{
+        &:nth-child(n+6){
+                display: none;
+        }
         &:nth-child(5){
             @media screen and (max-width: 1000px){
                 display: none;

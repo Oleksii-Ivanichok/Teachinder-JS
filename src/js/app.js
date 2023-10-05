@@ -7,7 +7,7 @@ import {
   filterTeachers,
   filterStatistics,
   renderStatistics,
-  addTeacher
+  addTeacher, renderSearchUsers
 } from './domOperation'
 
 function main(){
@@ -61,6 +61,7 @@ function main(){
   renderStatistics(users);
   filterStatistics(users);
   addTeacher(users);
+  renderSearchUsers(users);
   // task3
   console.log('task 3');
 
@@ -77,15 +78,14 @@ function main(){
 
 // task5
   console.log('task 5');
-  const searchByParam = 'full_name';
   const searchQuery = 'Aa';
 
-  const searchedUsers = searchUsers(users, searchByParam, searchQuery);
+  const searchedUsers = searchUsers(users, searchQuery);
   console.log(searchedUsers);
 
 // task 6
   console.log('task 6');
-  const searchPercent = findSearchPercent(users, searchUsers(users, searchByParam, searchQuery));
+  const searchPercent = findSearchPercent(users, searchUsers(users, searchQuery));
   console.log(`${searchPercent}%`);
 
 }

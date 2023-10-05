@@ -178,25 +178,27 @@ export function sortUsers(usersToSort, sortBy, sortOrder) {
   });
 }
 
-export function searchUsers(usersToSearch, searchBy, query) {
+export function searchUsers(usersToSearch, query) {
   const queryToLower = query.toLowerCase();
-  const searchedUsers = usersToSearch.filter((user) => {
-    if (Object.prototype.hasOwnProperty.call(user, searchBy)) {
-      const paramValue = user[searchBy].toLowerCase();
-      if (typeof paramValue === 'string') {
-        // Якщо параметр - рядок, перевіряємо на часткове співпадіння
+
+  const searchedUsers = [];
+
+  usersToSearch.forEach((user) => {
+    const matches = ['full_name', 'note', 'age'].some((param) => {
+      if (param in user) {
+        const paramValue = user[param].toString().toLowerCase();
         return paramValue.includes(queryToLower);
       }
-      if (typeof paramValue === 'number') {
-        // Якщо параметр - число, перевіряємо на часткове співпадіння, перетворюючи число на рядок
-        return paramValue.toString().includes(queryToLower.toString());
-      }
+      return false;
+    });
+
+    if (matches) {
+      searchedUsers.push(user);
     }
-    return false;
   });
+
   return searchedUsers;
 }
-
 
 export function findSearchPercent(usersToCompare, searchedUsersToCompare) {
   if (searchedUsersToCompare.length > 0) {

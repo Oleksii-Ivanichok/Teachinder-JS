@@ -1,4 +1,4 @@
-import {filterUsers, sortUsers} from "./userOperation";
+import {filterUsers, searchUsers, sortUsers} from "./userOperation";
 
 export function renderUser(usersToRender, addToEnd = false) {
   const userContainer = document.getElementById('top-teachers-container');
@@ -336,6 +336,15 @@ export function renderSearchUsers(userToSearch){
   const searchInput = document.getElementById('teacherSearchInput');
   const searchButton = document.getElementById('teacherSearchButton');
   searchButton.addEventListener('click', () => {
+    const searchedUsers = searchUsers(userToSearch, searchInput.value);
+    renderUser(searchedUsers);
+  })
+}
+
+export function renderFavoriteUsers(favoriteUsersToRender){
+  // users.filter(user => user.favorite === true)
+  const favoriteContainer = document.getElementById('favoriteContainer');
+  favoriteUsersToRender.forEach(user => {
 
   })
 }
