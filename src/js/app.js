@@ -140,7 +140,7 @@ const correctUser = {
 // users.push(correctUser);
 
 function validateUsers(usersToValidate) {
-  // const regExpEmail = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+  const regExpEmail = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   const schema = {
     full_name: (value) => isFirstLetterUpperCase(value),
     city: (value) => isFirstLetterUpperCase(value),
@@ -148,7 +148,7 @@ function validateUsers(usersToValidate) {
     country: (value) => isFirstLetterUpperCase(value),
     note: (value) => isFirstLetterUpperCase(value),
     age: (value) => Number.isInteger(value) && value > 0,
-    email: (value) => value.includes("@"),
+    email: (value) => regExpEmail.test(value),
     // gender: (value) => isFirstLetterUpperCase(value),
     // phone: (value, user) => validatePhone(value, user.country),
   };
@@ -158,7 +158,7 @@ function validateUsers(usersToValidate) {
     }
 
     const firstLetter = str.charAt(0);
-    return firstLetter === firstLetter.toUpperCase();
+    return firstLetter === firstLetter.toLocaleUpperCase();
   }
 
   function validatePhone(phone, country) {
@@ -222,7 +222,7 @@ function filterUsers(usersToFilter, country, age, gender, favorite) {
   return (filteredUsers);
 }
 
-const filteredUsers = filterUsers(users, 'Germany', '18-80', 'female', false);
+const filteredUsers = filterUsers(users, 'any', '18-80', 'female', false);
 console.log(filteredUsers);
 
 // task4
@@ -286,6 +286,8 @@ console.log('task 6');
 
 function findSearchPercent(usersToCompare, searchedUsersToCompare) {
   if (searchedUsersToCompare.length > 0) {
+    console.log(searchedUsersToCompare.length);
+    console.log(usersToCompare.length);
     const result = ((searchedUsersToCompare.length / usersToCompare.length) * 100).toFixed(2);
     return result;
   }
