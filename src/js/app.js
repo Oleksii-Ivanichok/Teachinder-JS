@@ -7,7 +7,9 @@ import {
   filterTeachers,
   filterStatistics,
   renderStatistics,
-  addTeacher, renderSearchUsers
+  addTeacher,
+  renderSearchUsers,
+  favoriteTeachersSlider
 } from './domOperation'
 
 function main(){
@@ -62,6 +64,7 @@ function main(){
   filterStatistics(users);
   addTeacher(users);
   renderSearchUsers(users);
+  // favoriteTeachersSlider();
   // task3
   console.log('task 3');
 

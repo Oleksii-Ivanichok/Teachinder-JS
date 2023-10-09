@@ -89,7 +89,7 @@ export function mergeAndFormatUser(randomUserListMock, additionalUsersList) {
 }
 
 export function validateUsers(usersToValidate) {
-  // const regExpEmail = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+  const regExpEmail = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   const schema = {
     full_name: (value) => isFirstLetterUpperCase(value),
     city: (value) => isFirstLetterUpperCase(value),
@@ -97,7 +97,7 @@ export function validateUsers(usersToValidate) {
     country: (value) => isFirstLetterUpperCase(value),
     note: (value) => isFirstLetterUpperCase(value),
     age: (value) => Number.isInteger(value) && value > 0,
-    email: (value) => value.includes("@"),
+    email: (value) => regExpEmail.test(value),
     // gender: (value) => isFirstLetterUpperCase(value),
     // phone: (value, user) => validatePhone(value, user.country),
   };
@@ -107,7 +107,7 @@ export function validateUsers(usersToValidate) {
     }
 
     const firstLetter = str.charAt(0);
-    return firstLetter === firstLetter.toUpperCase();
+    return firstLetter === firstLetter.toLocaleUpperCase();
   }
 
   function validatePhone(phone, country) {
@@ -148,7 +148,7 @@ export function validateUsers(usersToValidate) {
   return validUsers;
 }
 
-export function filterUsers(usersToFilter, country, age, gender, favorite) {
+export function filterUsers(usersToFilter, country, age, gender, favorite, photo = false) {
   const ageArray = age.split("-");
   const startAge =  parseInt(ageArray[0]);
   const endAge =  parseInt(ageArray[1]);
@@ -156,7 +156,8 @@ export function filterUsers(usersToFilter, country, age, gender, favorite) {
     .filter((user) => (country === 'any' || user.country === country)
       && (age === 'any' || user.age >= startAge && user.age <= endAge)
       && (gender === 'any' || user.gender === gender)
-      && (favorite === false || user.favorite === favorite));
+      && (favorite === false || user.favorite === favorite)
+      && (photo === false || user.picture_large !== undefined));
   return (filteredUsers);
 }
 

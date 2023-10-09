@@ -369,6 +369,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  vertical-align: middle;
   overflow: hidden;
   width: 150px;
   height: 150px;
@@ -383,6 +385,7 @@ body {
   font-size: 30px;
   color: #F25E3A;
   font-weight: 700;
+  text-align: center;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -439,6 +442,14 @@ body {
 .statistics__table th:nth-child(1) {
   padding-left: 30px;
   text-align: left;
+}
+.statistics__table th.thead-asc::after {
+  opacity: 1;
+  content: "↑";
+}
+.statistics__table th.thead-desc::after {
+  opacity: 1;
+  content: "↓";
 }
 .statistics__table th::after {
   content: "↓";

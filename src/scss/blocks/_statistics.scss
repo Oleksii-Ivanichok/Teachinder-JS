@@ -22,6 +22,14 @@
         font-weight: 400;
         background: $white;
         //transition: all 0.3s;
+        &.thead-asc::after{
+            opacity: 1;
+            content: "↑";
+        }
+        &.thead-desc::after{
+            opacity: 1;
+            content: "↓";
+        }
         &::after{
             content: "↓";
             color: #18A1B1;
