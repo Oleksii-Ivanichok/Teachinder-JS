@@ -9,7 +9,7 @@ import {
   renderStatistics,
   addTeacher,
   renderSearchUsers,
-  favoriteTeachersSlider
+  updateSlider
 } from './domOperation'
 
 function main(){
@@ -64,7 +64,9 @@ function main(){
   filterStatistics(users);
   addTeacher(users);
   renderSearchUsers(users);
-  // favoriteTeachersSlider();
+  updateSlider();
+  window.addEventListener('resize', updateSlider);
+
   // task3
   console.log('task 3');
 

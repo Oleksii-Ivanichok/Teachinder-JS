@@ -25,35 +25,55 @@
     //display: grid;
     //grid-template-columns: repeat(5, 2fr);
     //gap: 50px;
-    .teacher__card{
-        &:nth-child(n+6){
-                display: none;
-        }
-        &:nth-child(5){
-            @media screen and (max-width: 1000px){
-                display: none;
-            }
-        }
-        &:nth-child(4){
-            @media screen and (max-width: 800px){
-                display: none;
-            }
-        }
-        &:nth-child(3){
-            @media screen and (max-width: 610px){
-                display: none;
-            }
-        }
-        &:nth-child(2){
-            @media screen and (max-width: 420px){
-                display: none;
-            }
-        }
-    }
+    //.teacher__card{
+    //    &:nth-child(n+6){
+    //            display: none;
+    //    }
+    //    &:nth-child(5){
+    //        @media screen and (max-width: 1000px){
+    //            display: none;
+    //        }
+    //    }
+    //    &:nth-child(4){
+    //        @media screen and (max-width: 800px){
+    //            display: none;
+    //        }
+    //    }
+    //    &:nth-child(3){
+    //        @media screen and (max-width: 610px){
+    //            display: none;
+    //        }
+    //    }
+    //    &:nth-child(2){
+    //        @media screen and (max-width: 420px){
+    //            display: none;
+    //        }
+    //    }
+    //}
     display: flex;
     gap: 50px;
     justify-content: space-between;
-
     //flex-wrap: nowrap;
     //overflow: hidden;
+    position: relative;
+    left: 0;
+    transition: all ease 1s;
+}
+.slider-line{
+    overflow: hidden;
+    width: 100%;
+    height: auto;
+    @media screen and (max-width: 1158px){
+        width: 800px;
+    }
+    @media screen and (max-width: 858px){
+        width: 600px;
+    }
+    @media screen and (max-width: 658px){
+        width: 400px;
+    }
+    @media screen and (max-width: 458px){
+        width: 200px;
+    }
+
 }

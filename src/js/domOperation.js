@@ -110,6 +110,7 @@ export function teacherInfoPopUp(usersToShow) {
           const favoriteStatusImg = card.querySelector('.teacher__card-favorite');
           // console.log(favoriteStatusImg);
           if (usersToShow[userToShowIndex].favorite) {
+
             addToFavoriteButton.src = "./images/star.svg";
             favoriteStatusImg.src = "./images/star.svg";
             // console.log([usersToShow[userToShowIndex]]);
@@ -125,6 +126,8 @@ export function teacherInfoPopUp(usersToShow) {
             userToRemove.remove();
             // renderUser([usersToShow[userToShowIndex]], false, 'favoriteTeacher')
           }
+          updateSlider();
+
           // renderUser(usersToShow);
           // console.log(userToShow);
         })
@@ -132,6 +135,7 @@ export function teacherInfoPopUp(usersToShow) {
     } catch (e) {
     }
   })
+
 }
 
 export function filterTeachers(usersToFilter) {
@@ -407,27 +411,50 @@ export function renderSearchUsers(userToSearch) {
   })
 }
 
-export function favoriteTeachersSlider() {
+export function updateSlider() {
+  console.log("update")
   let offset = 0;
   const sliderContainer = document.getElementById('favoriteContainer');
   const leftButton = document.getElementById('sliderLeftButton');
   const rightButton = document.getElementById('sliderRightButton');
+  console.log(sliderContainer.childElementCount);
+  const elementAmount = sliderContainer.childElementCount;
+  const screenWidth = window.innerWidth;
+  console.log(screenWidth);
 
-  leftButton.addEventListener('click', () => {
-    console.log('click')
-    offset = offset + 180;
-    if(offset > 1000){
-      offset = 0;
-    }
-    sliderContainer.style.left = -offset + 'px';
-  })
+  let elementsOnScreen = 5;
 
-  rightButton.addEventListener('click', () => {
-    console.log('click')
-    offset = offset - 180;
-    if(offset < 0){
-      offset = 1000;
-    }
-    sliderContainer.style.left = -offset + 'px';
-  })
+  if (screenWidth < 1158 && screenWidth > 858) {
+    elementsOnScreen = 4;
+  } else if (screenWidth <= 858 && screenWidth > 658) {
+    elementsOnScreen = 3;
+  } else if (screenWidth <= 658 && screenWidth > 458) {
+    elementsOnScreen = 2;
+  } else if (screenWidth <= 458) {
+    elementsOnScreen = 1;
+  }
+  const maxOffset = (elementAmount-elementsOnScreen)*200;
+  console.log(elementsOnScreen);
+
+  console.log(maxOffset);
+
+  if(elementsOnScreen<elementAmount) {
+    leftButton.addEventListener('click', () => {
+      console.log('click')
+      offset = offset - 200;
+      if (offset < 0) {
+        offset = maxOffset;
+      }
+      sliderContainer.style.left = -offset + 'px';
+    })
+
+    rightButton.addEventListener('click', () => {
+      console.log('click')
+      offset = offset + 200;
+      if (offset > maxOffset) {
+        offset = 0;
+      }
+      sliderContainer.style.left = -offset + 'px';
+    })
+  }
 }

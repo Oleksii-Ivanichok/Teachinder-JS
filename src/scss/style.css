@@ -522,28 +522,34 @@ body {
   display: flex;
   gap: 50px;
   justify-content: space-between;
+  position: relative;
+  left: 0;
+  transition: all ease 1s;
 }
-.favorites__grid-list .teacher__card:nth-child(n+6) {
-  display: none;
+
+.slider-line {
+  overflow: hidden;
+  width: 100%;
+  height: auto;
 }
-@media screen and (max-width: 1000px) {
-  .favorites__grid-list .teacher__card:nth-child(5) {
-    display: none;
+@media screen and (max-width: 1158px) {
+  .slider-line {
+    width: 800px;
   }
 }
-@media screen and (max-width: 800px) {
-  .favorites__grid-list .teacher__card:nth-child(4) {
-    display: none;
+@media screen and (max-width: 858px) {
+  .slider-line {
+    width: 600px;
   }
 }
-@media screen and (max-width: 610px) {
-  .favorites__grid-list .teacher__card:nth-child(3) {
-    display: none;
+@media screen and (max-width: 658px) {
+  .slider-line {
+    width: 400px;
   }
 }
-@media screen and (max-width: 420px) {
-  .favorites__grid-list .teacher__card:nth-child(2) {
-    display: none;
+@media screen and (max-width: 458px) {
+  .slider-line {
+    width: 200px;
   }
 }
 
