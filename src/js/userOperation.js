@@ -1,7 +1,98 @@
-export function mergeAndFormatUser(randomUserListMock, additionalUsersList) {
-  const courses = ['Mathematics', 'Physics', 'English', 'Computer Science', 'Dancing', 'Chess', 'Biology', 'Chemistry', 'Law', 'Art', 'Medicine', 'Statistics'];
+// export function mergeAndFormatUser(randomUserListMock, additionalUsersList) {
+//   const courses = ['Mathematics', 'Physics', 'English', 'Computer Science', 'Dancing', 'Chess', 'Biology', 'Chemistry', 'Law', 'Art', 'Medicine', 'Statistics'];
+//
+//   function formatRandomUser(user) {
+//     return {
+//       gender: user.gender || '',
+//       title: user.name.title || '',
+//       full_name: `${user.name.first} ${user.name.last}` || '',
+//       city: user.location.city || '',
+//       state: user.location.state || '',
+//       country: user.location.country || '',
+//       postcode: user.location.postcode || '',
+//       coordinates: {
+//         latitude: user.location.coordinates.latitude || '',
+//         longitude: user.location.coordinates.longitude || '',
+//       },
+//       timezone: {
+//         offset: user.location.timezone.offset || '', description: user.location.timezone.description || '',
+//       },
+//       email: user.email || '',
+//       b_date: user.dob.date || user.b_day,
+//       age: user.dob.age || user.b_day,
+//       phone: user.cell || '',
+//       picture_large: user.picture.large || '',
+//       picture_thumbnail: user.picture.thumbnail || '',
+//       id: user.id.value || Date.now() || '',
+//       bg_color: user.bg_color || '#000000',
+//       favorite: user.favorite || false,
+//       note: user.note || 'Note',
+//       course: user.course || courses[Math.floor(Math.random() * courses.length)],
+//     };
+//   }
+//
+//   function formatAdditionalUser(user) {
+//     return {
+//       gender: user.gender || '',
+//       title: user.title || '',
+//       full_name: user.full_name || '',
+//       city: user.city || '',
+//       state: user.state || '',
+//       country: user.country || '',
+//       postcode: user.postcode || '',
+//       coordinates: {
+//         latitude: (user.coordinates && user.coordinates.latitude) || '',
+//         longitude: (user.coordinates && user.coordinates.longitude) || '',
+//       },
+//       timezone: {
+//         offset: (user.timezone && user.timezone.offset) || '',
+//         description: (user.timezone && user.timezone.description) || '',
+//       },
+//       email: user.email || '',
+//       b_date: user.b_day || '',
+//       age: user.b_day || '',
+//       phone: user.phone || '',
+//       picture_large: user.picture_large || '',
+//       picture_thumbnail: user.picture_thumbnail || '',
+//       id: user.id || Date.now(),
+//       bg_color: user.bg_color || '#000000',
+//       favorite: user.favorite || false,
+//       note: user.note || 'Note',
+//       course: user.course || courses[Math.floor(Math.random() * courses.length)],
+//     };
+//   }
+//
+//   function removeDuplicateObjects(array, property) {
+//     const uniqueIds = [];
+//
+//     return array.filter((element) => {
+//       const isDuplicate = uniqueIds.includes(element[property]);
+//
+//       if (!isDuplicate) {
+//         uniqueIds.push(element[property]);
+//
+//         return true;
+//       }
+//
+//       return false;
+//     });
+//   }
+//
+//   const randomUsersFormatted = randomUserListMock.map(formatRandomUser);
+//   const additionalUsersFormatted = additionalUsersList.map(formatAdditionalUser);
+//   const usersCombined = randomUsersFormatted.concat(additionalUsersFormatted);
+//   // console.log(usersCombined)
+//
+//   const users = removeDuplicateObjects(usersCombined, 'email');
+//   // console.log(users);
+//   return users;
+// }
 
-  function formatRandomUser(user) {
+
+
+export function formatFetchedUser(usersToFormat) {
+  const courses = ['Mathematics', 'Physics', 'English', 'Computer Science', 'Dancing', 'Chess', 'Biology', 'Chemistry', 'Law', 'Art', 'Medicine', 'Statistics'];
+  const formattedUsers = usersToFormat.map(user => {
     return {
       gender: user.gender || '',
       title: user.name.title || '',
@@ -29,63 +120,8 @@ export function mergeAndFormatUser(randomUserListMock, additionalUsersList) {
       note: user.note || 'Note',
       course: user.course || courses[Math.floor(Math.random() * courses.length)],
     };
-  }
-
-  function formatAdditionalUser(user) {
-    return {
-      gender: user.gender || '',
-      title: user.title || '',
-      full_name: user.full_name || '',
-      city: user.city || '',
-      state: user.state || '',
-      country: user.country || '',
-      postcode: user.postcode || '',
-      coordinates: {
-        latitude: (user.coordinates && user.coordinates.latitude) || '',
-        longitude: (user.coordinates && user.coordinates.longitude) || '',
-      },
-      timezone: {
-        offset: (user.timezone && user.timezone.offset) || '',
-        description: (user.timezone && user.timezone.description) || '',
-      },
-      email: user.email || '',
-      b_date: user.b_day || '',
-      age: user.b_day || '',
-      phone: user.phone || '',
-      picture_large: user.picture_large || '',
-      picture_thumbnail: user.picture_thumbnail || '',
-      id: user.id || Date.now(),
-      bg_color: user.bg_color || '#000000',
-      favorite: user.favorite || false,
-      note: user.note || 'Note',
-      course: user.course || courses[Math.floor(Math.random() * courses.length)],
-    };
-  }
-
-  function removeDuplicateObjects(array, property) {
-    const uniqueIds = [];
-
-    return array.filter((element) => {
-      const isDuplicate = uniqueIds.includes(element[property]);
-
-      if (!isDuplicate) {
-        uniqueIds.push(element[property]);
-
-        return true;
-      }
-
-      return false;
-    });
-  }
-
-  const randomUsersFormatted = randomUserListMock.map(formatRandomUser);
-  const additionalUsersFormatted = additionalUsersList.map(formatAdditionalUser);
-  const usersCombined = randomUsersFormatted.concat(additionalUsersFormatted);
-  // console.log(usersCombined)
-
-  const users = removeDuplicateObjects(usersCombined, 'email');
-  // console.log(users);
-  return users;
+  })
+  return formattedUsers;
 }
 
 export function validateUsers(usersToValidate) {

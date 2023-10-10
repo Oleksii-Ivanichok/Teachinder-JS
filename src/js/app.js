@@ -1,6 +1,6 @@
 require('../css/app.css');
 import { randomUserMock, additionalUsers } from './FE4U-Lab2-mock.js';
-import {mergeAndFormatUser, validateUsers, filterUsers, sortUsers,  searchUsers, findSearchPercent} from './userOperation'
+import {mergeAndFormatUser, formatFetchedUser, validateUsers, filterUsers, sortUsers,  searchUsers, findSearchPercent} from './userOperation'
 import {
   renderUser,
   teacherInfoPopUp,
@@ -11,13 +11,29 @@ import {
   renderSearchUsers,
   updateSlider
 } from './domOperation'
+import  {fetchUsers} from './fetchUsers'
 
-function main(){
+fetchData();
+async function fetchData(){
+  const url = 'https://randomuser.me/api/?results=50';
+  let response = await fetch(url);
+  let result = await response.json();
+  console.log(result);
+  main(result.results);
+}
+function main(fetchedUsers){
+  // let fetchedUsers;
+  // fetchUsers().then(res => {
+  //   fetchedUsers = res.results;
+  //   console.log(res.results);
+  // })
+
   // task 1
+  console.log(fetchedUsers);
+
   console.log('task 1');
-
-  let users = mergeAndFormatUser(randomUserMock, additionalUsers);
-
+  // let users = mergeAndFormatUser(fetchedUsers, fetchedUsers);
+  let users = formatFetchedUser(fetchedUsers)
   console.log(users);
 
 // task2
@@ -95,7 +111,7 @@ function main(){
 
 }
 
-main();
+// main();
 
 
 

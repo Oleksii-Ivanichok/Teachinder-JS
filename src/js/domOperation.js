@@ -161,6 +161,8 @@ export function filterTeachers(usersToFilter) {
     const filteredUsers = filterUsers(usersToFilter, selectedCountry, selectedAge, selectedGender, selectedFavorite, selectedWithPhoto);
     console.log(filteredUsers);
     renderUser(filteredUsers);
+    filterStatistics(filteredUsers);
+    renderStatistics(filteredUsers);
   }
 }
 
@@ -408,9 +410,14 @@ export function renderSearchUsers(userToSearch) {
   searchButton.addEventListener('click', () => {
     const searchedUsers = searchUsers(userToSearch, searchInput.value);
     renderUser(searchedUsers);
+    filterStatistics(searchedUsers);
+    renderStatistics(searchedUsers);
   })
 }
 
+function clearInputs(){
+  
+}
 export function updateSlider() {
   console.log("update")
   let offset = 0;
