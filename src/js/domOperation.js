@@ -144,7 +144,7 @@ export function filterTeachers(usersToFilter) {
   const filterSex = document.getElementById("filter-sex");
   const filterCheckboxPhoto = document.getElementById("filter-checkbox-photo");
   const filterOnlyFavorites = document.getElementById("filter-only-favorites");
-
+  const searchInput = document.getElementById('teacherSearchInput');
   filterAge.addEventListener("change", applyFilters);
   filterRegion.addEventListener("change", applyFilters);
   filterSex.addEventListener("change", applyFilters);
@@ -157,6 +157,7 @@ export function filterTeachers(usersToFilter) {
     const selectedGender = filterSex.value;
     const selectedFavorite = filterOnlyFavorites.checked;
     const selectedWithPhoto = filterCheckboxPhoto.checked;
+    searchInput.value = '';
 
     const filteredUsers = filterUsers(usersToFilter, selectedCountry, selectedAge, selectedGender, selectedFavorite, selectedWithPhoto);
     console.log(filteredUsers);
@@ -164,6 +165,14 @@ export function filterTeachers(usersToFilter) {
     filterStatistics(filteredUsers);
     renderStatistics(filteredUsers);
   }
+}
+
+function clearFilterInputs(){
+  document.getElementById("filter-age").value = "any";
+  document.getElementById("filter-region").value = "any";
+  document.getElementById("filter-sex").value = "any";
+  document.getElementById("filter-checkbox-photo").checked = false;
+  document.getElementById("filter-only-favorites").checked = false;
 }
 
 export function filterStatistics(usersToSort) {
@@ -409,15 +418,14 @@ export function renderSearchUsers(userToSearch) {
   const searchButton = document.getElementById('teacherSearchButton');
   searchButton.addEventListener('click', () => {
     const searchedUsers = searchUsers(userToSearch, searchInput.value);
+    clearFilterInputs();
     renderUser(searchedUsers);
     filterStatistics(searchedUsers);
     renderStatistics(searchedUsers);
   })
 }
 
-function clearInputs(){
-  
-}
+
 export function updateSlider() {
   console.log("update")
   let offset = 0;

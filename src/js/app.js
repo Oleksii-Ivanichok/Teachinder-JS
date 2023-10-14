@@ -11,6 +11,7 @@ import {
   renderSearchUsers,
   updateSlider
 } from './domOperation'
+import {paginationStatistic} from "./pagination";
 import  {fetchUsers} from './fetchUsers'
 
 fetchData();
@@ -80,6 +81,8 @@ function main(fetchedUsers){
   filterStatistics(users);
   addTeacher(users);
   renderSearchUsers(users);
+  paginationStatistic(users);
+  console.log(users);
   updateSlider();
   window.addEventListener('resize', updateSlider);
 
