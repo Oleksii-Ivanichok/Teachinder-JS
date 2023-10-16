@@ -167,7 +167,7 @@ export function filterTeachers(usersToFilter) {
   }
 }
 
-function clearFilterInputs(){
+function clearFilterInputs() {
   document.getElementById("filter-age").value = "any";
   document.getElementById("filter-region").value = "any";
   document.getElementById("filter-sex").value = "any";
@@ -177,11 +177,11 @@ function clearFilterInputs(){
 
 export function filterStatistics(usersToSort) {
   const sortButtons = [
-    { id: "statisticsSortByName", key: "full_name" },
-    { id: "statisticsSortBySpeciality", key: "course" },
-    { id: "statisticsSortByAge", key: "age" },
-    { id: "statisticsSortByGender", key: "gender" },
-    { id: "statisticsSortByNationality", key: "country" },
+    {id: "statisticsSortByName", key: "full_name"},
+    {id: "statisticsSortBySpeciality", key: "course"},
+    {id: "statisticsSortByAge", key: "age"},
+    {id: "statisticsSortByGender", key: "gender"},
+    {id: "statisticsSortByNationality", key: "country"},
   ];
 
   sortButtons.forEach((buttonInfo) => {
@@ -206,7 +206,6 @@ export function filterStatistics(usersToSort) {
       applySort(buttonInfo.key, currentToggleState);
     });
   });
-
 
 
   function applySort(sortBy, sortOrder) {
@@ -239,30 +238,39 @@ export function renderStatistics(usersToRender) {
                             </tr>`;
   })
   statisticContainer.innerHTML = userStatisticHTML;
+  renderPagination(usersToRender);
 }
 
 let paginationState = {
   currentPage: 0,
   usersOnPage: 10
 }
-export function renderPagination(userToPagination){
+
+export function renderPagination(userToPagination) {
   const paginationContainer = document.getElementById('paginationContainer');
   paginationContainer.innerHTML = ``;
-  const pageAmount = (userToPagination.length/paginationState.usersOnPage);
+  const pageAmount = (userToPagination.length / paginationState.usersOnPage);
   for (let i = 0; i < pageAmount; i++) {
     const paginationElement = document.createElement("li");
-    paginationElement.textContent = `${i+1}`;
-    paginationElement.addEventListener('click', ()=>{
-      paginationState.currentPage = i;
-      const paginationSlice = paginationState.currentPage * paginationState.usersOnPage;
-      const userToRender = userToPagination.slice(paginationSlice, paginationSlice + paginationState.usersOnPage)
-      renderStatistics(userToRender);
-    })
+    paginationElement.textContent = `${i + 1}`;
+    if(i === paginationState.currentPage){
+      paginationElement.classList.add('current__page')
+    }
+    addClickListenerPagination(paginationElement, i);
     paginationContainer.appendChild(paginationElement);
   }
 
-
+  function addClickListenerPagination(paginationElement, page) {
+    paginationElement.addEventListener('click', () => {
+      paginationState.currentPage = page;
+      const paginationSlice = paginationState.currentPage * paginationState.usersOnPage;
+      const userToRender = userToPagination.slice(paginationSlice, paginationSlice + paginationState.usersOnPage)
+      renderStatistics(userToRender);
+      renderPagination(userToPagination);
+    })
+  }
 }
+
 export function addTeacher(usersToExpand) {
   const popUpContainer = document.getElementById('popUpContainer');
   const addTeacherButtons = document.querySelectorAll('.add-teacher-button')
@@ -414,6 +422,8 @@ export function addTeacher(usersToExpand) {
               usersToExpand.push(newTeacher);
               renderUser([newTeacher], true);
               renderStatistics(usersToExpand);
+              filterStatistics(usersToExpand);
+              clearFilterInputs();
 
               popUpContainer.innerHTML = '';
               popUpContainer.classList.toggle("none");
@@ -469,12 +479,12 @@ export function updateSlider() {
   } else if (screenWidth <= 458) {
     elementsOnScreen = 1;
   }
-  const maxOffset = (elementAmount-elementsOnScreen)*200;
+  const maxOffset = (elementAmount - elementsOnScreen) * 200;
   console.log(elementsOnScreen);
 
   console.log(maxOffset);
 
-  if(elementsOnScreen<elementAmount) {
+  if (elementsOnScreen < elementAmount) {
     leftButton.addEventListener('click', () => {
       console.log('click')
       offset = offset - 200;
