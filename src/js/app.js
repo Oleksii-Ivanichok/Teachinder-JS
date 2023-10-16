@@ -9,7 +9,7 @@ import {
   renderStatistics,
   addTeacher,
   renderSearchUsers,
-  updateSlider
+  updateSlider, renderPagination
 } from './domOperation'
 import {paginationStatistic} from "./pagination";
 import  {fetchUsers} from './fetchUsers'
@@ -77,11 +77,12 @@ function main(fetchedUsers){
   renderUser(users);
   teacherInfoPopUp(users);
   filterTeachers(users);
+  renderPagination(users);
   renderStatistics(users);
   filterStatistics(users);
   addTeacher(users);
   renderSearchUsers(users);
-  paginationStatistic(users);
+  // paginationStatistic(users);
   console.log(users);
   updateSlider();
   window.addEventListener('resize', updateSlider);

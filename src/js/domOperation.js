@@ -228,7 +228,7 @@ export function filterStatistics(usersToSort) {
 export function renderStatistics(usersToRender) {
   const statisticContainer = document.getElementById('statisticContainer');
   let userStatisticHTML = ``;
-  usersToRender.forEach(user => {
+  usersToRender.slice(0, 10).forEach(user => {
     userStatisticHTML += `
                             <tr>
                                 <td>${user.full_name}</td>
@@ -237,11 +237,32 @@ export function renderStatistics(usersToRender) {
                                 <td>${user.gender}</td>
                                 <td>${user.country}</td>
                             </tr>`;
-    // statisticContainer.insertAdjacentHTML('beforeend', userStatisticHTML);
   })
   statisticContainer.innerHTML = userStatisticHTML;
 }
 
+let paginationState = {
+  currentPage: 0,
+  usersOnPage: 10
+}
+export function renderPagination(userToPagination){
+  const paginationContainer = document.getElementById('paginationContainer');
+  paginationContainer.innerHTML = ``;
+  const pageAmount = (userToPagination.length/paginationState.usersOnPage);
+  for (let i = 0; i < pageAmount; i++) {
+    const paginationElement = document.createElement("li");
+    paginationElement.textContent = `${i+1}`;
+    paginationElement.addEventListener('click', ()=>{
+      paginationState.currentPage = i;
+      const paginationSlice = paginationState.currentPage * paginationState.usersOnPage;
+      const userToRender = userToPagination.slice(paginationSlice, paginationSlice + paginationState.usersOnPage)
+      renderStatistics(userToRender);
+    })
+    paginationContainer.appendChild(paginationElement);
+  }
+
+
+}
 export function addTeacher(usersToExpand) {
   const popUpContainer = document.getElementById('popUpContainer');
   const addTeacherButtons = document.querySelectorAll('.add-teacher-button')
