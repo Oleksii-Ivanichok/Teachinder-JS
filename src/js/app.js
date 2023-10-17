@@ -9,25 +9,27 @@ import {
   renderStatistics,
   addTeacher,
   renderSearchUsers,
-  updateSlider, renderPagination
+  updateSlider
 } from './domOperation'
-import {paginationStatistic} from "./pagination";
-import  {fetchUsers} from './fetchUsers'
 
 fetchData();
-async function fetchData(){
+async function fetchData() {
   const url = 'https://randomuser.me/api/?results=50';
-  let response = await fetch(url);
-  let result = await response.json();
-  console.log(result);
-  main(result.results);
+  try {
+    let response = await fetch(url);
+    if (response.ok) {
+      let result = await response.json();
+      console.log(result);
+      main(result.results);
+    } else {
+      console.error('Network response was not ok.');
+    }
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
 }
+
 function main(fetchedUsers){
-  // let fetchedUsers;
-  // fetchUsers().then(res => {
-  //   fetchedUsers = res.results;
-  //   console.log(res.results);
-  // })
 
   // task 1
   console.log(fetchedUsers);
@@ -77,12 +79,10 @@ function main(fetchedUsers){
   renderUser(users);
   teacherInfoPopUp(users);
   filterTeachers(users);
-  renderPagination(users);
   renderStatistics(users);
   filterStatistics(users);
   addTeacher(users);
   renderSearchUsers(users);
-  // paginationStatistic(users);
   console.log(users);
   updateSlider();
   window.addEventListener('resize', updateSlider);

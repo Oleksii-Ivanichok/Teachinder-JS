@@ -1,0 +1,69 @@
+{
+  "users": [
+    {
+      "full_name": "Олексій Іванічок",
+      "course": "Chemistry",
+      "country": "Ukraine",
+      "city": "Kyiv",
+      "email": "oleksii.ivanichok@gmail.com",
+      "phone": "+380678842837",
+      "b_date": "2000-05-16",
+      "gender": "male",
+      "bg_color": "#000000",
+      "note": "Note",
+      "id": 1
+    },
+    {
+      "full_name": "Олексій Іванічок",
+      "course": "Mathematics",
+      "country": "Ukraine",
+      "city": "Kyiv",
+      "email": "oleksii.ivanichok@gmail.com",
+      "phone": "+380678842837",
+      "b_date": "1998-01-17",
+      "gender": "male",
+      "bg_color": "#000000",
+      "note": "Note",
+      "id": 2
+    },
+    {
+      "full_name": "Олексій Іванічок",
+      "course": "Mathematics",
+      "country": "Ukraine",
+      "city": "Kyiv",
+      "email": "oleksii.ivanichok@gmail.com",
+      "phone": "+380678842837",
+      "b_date": "1999-02-09",
+      "gender": "male",
+      "bg_color": "#000000",
+      "note": "Note",
+      "id": 3
+    },
+    {
+      "full_name": "Олексій Іванічок",
+      "course": "Mathematics",
+      "country": "Ukraine",
+      "city": "Kyiv",
+      "email": "oleksii.ivanichok@gmail.com",
+      "phone": "+380678842837",
+      "b_date": "1997-01-17",
+      "gender": "male",
+      "bg_color": "#000000",
+      "note": "Note",
+      "id": 4
+    },
+    {
+      "full_name": "Олексій Іванічок",
+      "course": "Mathematics",
+      "country": "Ukraine",
+      "city": "Kyiv",
+      "email": "oleksii.ivanichok@gmail.com",
+      "phone": "+380678842837",
+      "b_date": "1999-02-17",
+      "gender": "male",
+      "bg_color": "#000000",
+      "note": "Note",
+      "id": 5
+    }
+  ]
+}

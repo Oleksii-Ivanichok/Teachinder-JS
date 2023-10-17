@@ -348,7 +348,7 @@ export function addTeacher(usersToExpand) {
                 <textarea id="add-teacher-notes" name="notes"></textarea>
             </div>
 
-            <button class="add-teacher__button button" id="add-new-teacher">Add</button>
+            <button class="add-teacher__button button" id="add-new-teacher" type="button">Add</button>
         </form>
     </div>`;
 
@@ -420,6 +420,7 @@ export function addTeacher(usersToExpand) {
 
               // console.log([newTeacher])
               usersToExpand.push(newTeacher);
+              // postNewTeacher(newTeacher);
               renderUser([newTeacher], true);
               renderStatistics(usersToExpand);
               filterStatistics(usersToExpand);
@@ -444,6 +445,22 @@ export function addTeacher(usersToExpand) {
   )
 }
 
+function postNewTeacher(data){
+  fetch('http://localhost:3000/users', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      console.log('Дані були успішно відправлені на сервер', result);
+    })
+    .catch((error) => {
+      console.error('Помилка під час відправки POST-запиту', error);
+    });
+}
 export function renderSearchUsers(userToSearch) {
   const searchInput = document.getElementById('teacherSearchInput');
   const searchButton = document.getElementById('teacherSearchButton');
