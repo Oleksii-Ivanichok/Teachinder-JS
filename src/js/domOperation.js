@@ -420,7 +420,7 @@ export function addTeacher(usersToExpand) {
 
               // console.log([newTeacher])
               usersToExpand.push(newTeacher);
-              // postNewTeacher(newTeacher);
+              // postNewTeacher(newTeacher); // json-server --watch src/db.json
               renderUser([newTeacher], true);
               renderStatistics(usersToExpand);
               filterStatistics(usersToExpand);
