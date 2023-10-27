@@ -144,7 +144,7 @@ export function filterTeachers(usersToFilter) {
   const filterSex = document.getElementById("filter-sex");
   const filterCheckboxPhoto = document.getElementById("filter-checkbox-photo");
   const filterOnlyFavorites = document.getElementById("filter-only-favorites");
-
+  const searchInput = document.getElementById('teacherSearchInput');
   filterAge.addEventListener("change", applyFilters);
   filterRegion.addEventListener("change", applyFilters);
   filterSex.addEventListener("change", applyFilters);
@@ -157,20 +157,31 @@ export function filterTeachers(usersToFilter) {
     const selectedGender = filterSex.value;
     const selectedFavorite = filterOnlyFavorites.checked;
     const selectedWithPhoto = filterCheckboxPhoto.checked;
+    searchInput.value = '';
 
     const filteredUsers = filterUsers(usersToFilter, selectedCountry, selectedAge, selectedGender, selectedFavorite, selectedWithPhoto);
     console.log(filteredUsers);
     renderUser(filteredUsers);
+    filterStatistics(filteredUsers);
+    renderStatistics(filteredUsers);
   }
+}
+
+function clearFilterInputs() {
+  document.getElementById("filter-age").value = "any";
+  document.getElementById("filter-region").value = "any";
+  document.getElementById("filter-sex").value = "any";
+  document.getElementById("filter-checkbox-photo").checked = false;
+  document.getElementById("filter-only-favorites").checked = false;
 }
 
 export function filterStatistics(usersToSort) {
   const sortButtons = [
-    { id: "statisticsSortByName", key: "full_name" },
-    { id: "statisticsSortBySpeciality", key: "course" },
-    { id: "statisticsSortByAge", key: "age" },
-    { id: "statisticsSortByGender", key: "gender" },
-    { id: "statisticsSortByNationality", key: "country" },
+    {id: "statisticsSortByName", key: "full_name"},
+    {id: "statisticsSortBySpeciality", key: "course"},
+    {id: "statisticsSortByAge", key: "age"},
+    {id: "statisticsSortByGender", key: "gender"},
+    {id: "statisticsSortByNationality", key: "country"},
   ];
 
   sortButtons.forEach((buttonInfo) => {
@@ -197,7 +208,6 @@ export function filterStatistics(usersToSort) {
   });
 
 
-
   function applySort(sortBy, sortOrder) {
 
     // console.log(selectedAge);
@@ -217,7 +227,7 @@ export function filterStatistics(usersToSort) {
 export function renderStatistics(usersToRender) {
   const statisticContainer = document.getElementById('statisticContainer');
   let userStatisticHTML = ``;
-  usersToRender.forEach(user => {
+  usersToRender.slice(0, 10).forEach(user => {
     userStatisticHTML += `
                             <tr>
                                 <td>${user.full_name}</td>
@@ -226,9 +236,39 @@ export function renderStatistics(usersToRender) {
                                 <td>${user.gender}</td>
                                 <td>${user.country}</td>
                             </tr>`;
-    // statisticContainer.insertAdjacentHTML('beforeend', userStatisticHTML);
   })
   statisticContainer.innerHTML = userStatisticHTML;
+  renderPagination(usersToRender);
+}
+
+let paginationState = {
+  currentPage: 0,
+  usersOnPage: 10
+}
+
+export function renderPagination(userToPagination) {
+  const paginationContainer = document.getElementById('paginationContainer');
+  paginationContainer.innerHTML = ``;
+  const pageAmount = (userToPagination.length / paginationState.usersOnPage);
+  for (let i = 0; i < pageAmount; i++) {
+    const paginationElement = document.createElement("li");
+    paginationElement.textContent = `${i + 1}`;
+    if(i === paginationState.currentPage){
+      paginationElement.classList.add('current__page')
+    }
+    addClickListenerPagination(paginationElement, i);
+    paginationContainer.appendChild(paginationElement);
+  }
+
+  function addClickListenerPagination(paginationElement, page) {
+    paginationElement.addEventListener('click', () => {
+      paginationState.currentPage = page;
+      const paginationSlice = paginationState.currentPage * paginationState.usersOnPage;
+      const userToRender = userToPagination.slice(paginationSlice, paginationSlice + paginationState.usersOnPage)
+      renderStatistics(userToRender);
+      renderPagination(userToPagination);
+    })
+  }
 }
 
 export function addTeacher(usersToExpand) {
@@ -308,7 +348,7 @@ export function addTeacher(usersToExpand) {
                 <textarea id="add-teacher-notes" name="notes"></textarea>
             </div>
 
-            <button class="add-teacher__button button" id="add-new-teacher">Add</button>
+            <button class="add-teacher__button button" id="add-new-teacher" type="button">Add</button>
         </form>
     </div>`;
 
@@ -380,8 +420,11 @@ export function addTeacher(usersToExpand) {
 
               // console.log([newTeacher])
               usersToExpand.push(newTeacher);
+              // postNewTeacher(newTeacher); // json-server --watch src/db.json
               renderUser([newTeacher], true);
               renderStatistics(usersToExpand);
+              filterStatistics(usersToExpand);
+              clearFilterInputs();
 
               popUpContainer.innerHTML = '';
               popUpContainer.classList.toggle("none");
@@ -402,14 +445,34 @@ export function addTeacher(usersToExpand) {
   )
 }
 
+function postNewTeacher(data){
+  fetch('http://localhost:3000/users', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      console.log('Дані були успішно відправлені на сервер', result);
+    })
+    .catch((error) => {
+      console.error('Помилка під час відправки POST-запиту', error);
+    });
+}
 export function renderSearchUsers(userToSearch) {
   const searchInput = document.getElementById('teacherSearchInput');
   const searchButton = document.getElementById('teacherSearchButton');
   searchButton.addEventListener('click', () => {
     const searchedUsers = searchUsers(userToSearch, searchInput.value);
+    clearFilterInputs();
     renderUser(searchedUsers);
+    filterStatistics(searchedUsers);
+    renderStatistics(searchedUsers);
   })
 }
+
 
 export function updateSlider() {
   console.log("update")
@@ -433,12 +496,12 @@ export function updateSlider() {
   } else if (screenWidth <= 458) {
     elementsOnScreen = 1;
   }
-  const maxOffset = (elementAmount-elementsOnScreen)*200;
+  const maxOffset = (elementAmount - elementsOnScreen) * 200;
   console.log(elementsOnScreen);
 
   console.log(maxOffset);
 
-  if(elementsOnScreen<elementAmount) {
+  if (elementsOnScreen < elementAmount) {
     leftButton.addEventListener('click', () => {
       console.log('click')
       offset = offset - 200;

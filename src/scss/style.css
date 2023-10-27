@@ -488,10 +488,10 @@ body {
   display: flex;
   gap: 15px;
 }
-.statistics__pagination ul a {
+.statistics__pagination ul li {
   color: #18A1B1;
 }
-.statistics__pagination ul a.current__page {
+.statistics__pagination ul li.current__page {
   color: #000;
 }
 

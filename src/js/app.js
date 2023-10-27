@@ -1,6 +1,6 @@
 require('../css/app.css');
 import { randomUserMock, additionalUsers } from './FE4U-Lab2-mock.js';
-import {mergeAndFormatUser, validateUsers, filterUsers, sortUsers,  searchUsers, findSearchPercent} from './userOperation'
+import {mergeAndFormatUser, formatFetchedUser, validateUsers, filterUsers, sortUsers,  searchUsers, findSearchPercent} from './userOperation'
 import {
   renderUser,
   teacherInfoPopUp,
@@ -12,12 +12,31 @@ import {
   updateSlider
 } from './domOperation'
 
-function main(){
+fetchData();
+async function fetchData() {
+  const url = 'https://randomuser.me/api/?results=50';
+  try {
+    let response = await fetch(url);
+    if (response.ok) {
+      let result = await response.json();
+      console.log(result);
+      main(result.results);
+    } else {
+      console.error('Network response was not ok.');
+    }
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+}
+
+function main(fetchedUsers){
+
   // task 1
+  console.log(fetchedUsers);
+
   console.log('task 1');
-
-  let users = mergeAndFormatUser(randomUserMock, additionalUsers);
-
+  // let users = mergeAndFormatUser(fetchedUsers, fetchedUsers);
+  let users = formatFetchedUser(fetchedUsers)
   console.log(users);
 
 // task2
@@ -64,6 +83,7 @@ function main(){
   filterStatistics(users);
   addTeacher(users);
   renderSearchUsers(users);
+  console.log(users);
   updateSlider();
   window.addEventListener('resize', updateSlider);
 
@@ -95,7 +115,7 @@ function main(){
 
 }
 
-main();
+// main();
 
 
 
