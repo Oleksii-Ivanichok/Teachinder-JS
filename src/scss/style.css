@@ -220,6 +220,13 @@ body {
   backdrop-filter: blur(5px);
 }
 
+.map__container {
+  position: fixed;
+  top: 125px;
+  height: 400px;
+  width: 100%;
+}
+
 .header {
   padding-top: 40px;
 }

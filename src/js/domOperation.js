@@ -1,5 +1,30 @@
 import {filterUsers, searchUsers, sortUsers} from "./userOperation";
+import L from 'leaflet';
 
+function toggleMap(userOnMap){
+  console.log('toggleMap');
+  const mapContainer = document.getElementById('mapContainer');
+  console.log(mapContainer);
+  mapContainer.classList.toggle("none");
+  mapContainer.innerHTML = '';
+  if(!mapContainer.classList.contains("none")) {
+    const mapContainerHTML = `<div id="map" class="map__container"></div>`;
+    mapContainer.insertAdjacentHTML('beforeend', mapContainerHTML);
+    const map = L.map('map').setView([userOnMap.coordinates.latitude, userOnMap.coordinates.longitude], 13);
+
+// Add a tile layer (you can change the URL to your preferred map provider)
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+// Add a marker for the teacher's location
+    L.marker([userOnMap.coordinates.latitude, userOnMap.coordinates.longitude]).addTo(map)
+      .bindPopup(`${userOnMap.full_name}`)
+      .openPopup();
+  }
+
+}
 export function renderUser(usersToRender, addToEnd = false, place = "topTeachers") {
   let userContainer;
   if (place === "topTeachers") {
@@ -60,7 +85,9 @@ export function teacherInfoPopUp(usersToShow) {
           favoriteStar = 'images/empty-star.svg'
         }
         popUpContainer.classList.toggle("none");
-        const teacherInfoHTML = `<div class="teacher-info__popup">
+        const teacherInfoHTML = `
+    <div class="none" id="mapContainer"></div>
+        <div class="teacher-info__popup">
         <div class="add-teacher__title">
             <h3 class="title-3">Teacher Info</h3>
             <button id="closeButton">
@@ -85,7 +112,7 @@ export function teacherInfoPopUp(usersToShow) {
                 </div>
             </div>
             <p class="teacher-info__description">${userToShow.note}</p>
-            <a href="#"><p class="teacher-info__map">toggle map</p></a>
+            <a href="#"><p class="teacher-info__map" id="toggleMapButton">toggle map</p></a>
         </div>
     </div>`;
         // popUpContainer.insertAdjacentHTML('beforeend', teacherInfoHTML);
@@ -130,6 +157,11 @@ export function teacherInfoPopUp(usersToShow) {
 
           // renderUser(usersToShow);
           // console.log(userToShow);
+        })
+        const toggleMapButton = document.getElementById('toggleMapButton');
+        toggleMapButton.addEventListener('click', () => {
+          console.log('click')
+          toggleMap(userToShow);
         })
       }
     } catch (e) {
