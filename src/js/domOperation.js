@@ -1,7 +1,7 @@
-import {filterUsers, searchUsers, sortUsers} from "./userOperation";
 import L from 'leaflet';
 import Chart from 'chart.js/auto';
-import * as dayjs from 'dayjs'
+import * as dayjs from 'dayjs';
+import { filterUsers, searchUsers, sortUsers } from './userOperation';
 
 function calculateDaysToNextBirthDay(birthDate) {
   // console.log(birthDate);
@@ -19,7 +19,7 @@ function calculateDaysToNextBirthDay(birthDate) {
 function renderCharts(usersToCharts) {
   const params = ['course', 'age', 'gender', 'country'];
   const pieChartContainer = document.getElementById('pieChartContainer');
-  pieChartContainer.innerHTML = ``;
+  pieChartContainer.innerHTML = '';
 
   params.forEach((param) => {
     const chartElement = document.createElement('div');
@@ -55,9 +55,9 @@ function renderCharts(usersToCharts) {
               'rgba(255, 206, 86, 0.2)',
               'rgba(75, 192, 192, 0.2)',
               'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)'
+              'rgba(255, 159, 64, 0.2)',
             ],
-          }]
+          }],
         },
         options: {
           plugins: {
@@ -72,34 +72,32 @@ function renderCharts(usersToCharts) {
   });
 }
 
-
-function toggleMap(userOnMap){
+function toggleMap(userOnMap) {
   console.log('toggleMap');
   const mapContainer = document.getElementById('mapContainer');
   console.log(mapContainer);
-  mapContainer.classList.toggle("none");
+  mapContainer.classList.toggle('none');
   mapContainer.innerHTML = '';
-  if(!mapContainer.classList.contains("none")) {
-    const mapContainerHTML = `<div id="map" class="map__container"></div>`;
+  if (!mapContainer.classList.contains('none')) {
+    const mapContainerHTML = '<div id="map" class="map__container"></div>';
     mapContainer.insertAdjacentHTML('beforeend', mapContainerHTML);
     const map = L.map('map').setView([userOnMap.coordinates.latitude, userOnMap.coordinates.longitude], 13);
 
-// Add a tile layer (you can change the URL to your preferred map provider)
+    // Add a tile layer (you can change the URL to your preferred map provider)
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
 
-// Add a marker for the teacher's location
+    // Add a marker for the teacher's location
     L.marker([userOnMap.coordinates.latitude, userOnMap.coordinates.longitude]).addTo(map)
       .bindPopup(`${userOnMap.full_name}`)
       .openPopup();
   }
-
 }
-export function renderUser(usersToRender, addToEnd = false, place = "topTeachers") {
+export function renderUser(usersToRender, addToEnd = false, place = 'topTeachers') {
   let userContainer;
-  if (place === "topTeachers") {
+  if (place === 'topTeachers') {
     userContainer = document.getElementById('top-teachers-container');
   } else {
     userContainer = document.getElementById('favoriteContainer');
@@ -108,17 +106,17 @@ export function renderUser(usersToRender, addToEnd = false, place = "topTeachers
   let userHTML = '';
   usersToRender.forEach((user) => {
     let starSrc;
-    let userPic = user.picture_large || '';
+    const userPic = user.picture_large || '';
     let userPicToDisplay;
     if (userPic === '') {
-      userPicToDisplay = `<p class="teacher__card-img">${user.full_name}</p>`
+      userPicToDisplay = `<p class="teacher__card-img">${user.full_name}</p>`;
     } else {
-      userPicToDisplay = `<img class="teacher__card-img" src="${userPic}">`
+      userPicToDisplay = `<img class="teacher__card-img" src="${userPic}">`;
     }
     if (user.favorite) {
-      starSrc = 'images/star.svg'
+      starSrc = 'images/star.svg';
     } else {
-      starSrc = ''
+      starSrc = '';
     }
     userHTML += `
         <div class="teacher__card" data-teacher-email="${user.email}" >
@@ -130,7 +128,7 @@ export function renderUser(usersToRender, addToEnd = false, place = "topTeachers
             <p class="teacher__card-subject">${user.course}</p>
             <p class="teacher__card-country">${user.country}</p>
         </div>`;
-  })
+  });
   if (addToEnd) {
     userContainer.insertAdjacentHTML('beforeend', userHTML);
   } else {
@@ -138,28 +136,26 @@ export function renderUser(usersToRender, addToEnd = false, place = "topTeachers
   }
 }
 
-
-
 export function teacherInfoPopUp(usersToShow) {
   const popUpContainer = document.getElementById('popUpContainer');
-  window.addEventListener('click', event => {
+  window.addEventListener('click', (event) => {
     try {
       if (event.target.closest('.teacher__card').classList.contains('teacher__card')) {
         const card = event.target.closest('.teacher__card');
         // console.log(card);
         const userId = card.dataset.teacherEmail;
         // console.log(userId);
-        const userToShow = usersToShow.find(user => user.email === userId);
-        const userToShowIndex = usersToShow.findIndex(user => user.email === userId);
+        const userToShow = usersToShow.find((user) => user.email === userId);
+        const userToShowIndex = usersToShow.findIndex((user) => user.email === userId);
         // console.log(userToShow.b_date);
-        const daysToNextBirthDay = calculateDaysToNextBirthDay(new Date (userToShow.b_date));
+        const daysToNextBirthDay = calculateDaysToNextBirthDay(new Date(userToShow.b_date));
         let favoriteStar;
         if (userToShow.favorite) {
-          favoriteStar = 'images/star.svg'
+          favoriteStar = 'images/star.svg';
         } else {
-          favoriteStar = 'images/empty-star.svg'
+          favoriteStar = 'images/empty-star.svg';
         }
-        popUpContainer.classList.toggle("none");
+        popUpContainer.classList.toggle('none');
         const teacherInfoHTML = `
     <div class="none" id="mapContainer"></div>
         <div class="teacher-info__popup">
@@ -193,12 +189,12 @@ export function teacherInfoPopUp(usersToShow) {
     </div>`;
         // popUpContainer.insertAdjacentHTML('beforeend', teacherInfoHTML);
         popUpContainer.innerHTML = teacherInfoHTML;
-        const closeButton = document.getElementById("closeButton");
+        const closeButton = document.getElementById('closeButton');
         closeButton.addEventListener('click', () => {
           popUpContainer.innerHTML = '';
-          popUpContainer.classList.toggle("none");
-        })
-        const addToFavoriteButton = document.getElementById("addToFavoriteButton");
+          popUpContainer.classList.toggle('none');
+        });
+        const addToFavoriteButton = document.getElementById('addToFavoriteButton');
         addToFavoriteButton.addEventListener('click', () => {
           const userToRemoveEmail = usersToShow[userToShowIndex].email;
 
@@ -213,18 +209,17 @@ export function teacherInfoPopUp(usersToShow) {
           const favoriteStatusImg = card.querySelector('.teacher__card-favorite');
           // console.log(favoriteStatusImg);
           if (usersToShow[userToShowIndex].favorite) {
-
-            addToFavoriteButton.src = "./images/star.svg";
-            favoriteStatusImg.src = "./images/star.svg";
+            addToFavoriteButton.src = './images/star.svg';
+            favoriteStatusImg.src = './images/star.svg';
             // console.log([usersToShow[userToShowIndex]]);
-            renderUser([usersToShow[userToShowIndex]], true, 'favoriteTeacher')
+            renderUser([usersToShow[userToShowIndex]], true, 'favoriteTeacher');
             // console.log(favoriteStatusImg);
           } else {
             const removeInitialFavImg = topTeacherStarToRemove.querySelector('.teacher__card-favorite');
             removeInitialFavImg.src = '';
 
-            addToFavoriteButton.src = "./images/empty-star.svg";
-            favoriteStatusImg.src = "";
+            addToFavoriteButton.src = './images/empty-star.svg';
+            favoriteStatusImg.src = '';
             // console.log(userToRemove);
             userToRemove.remove();
             // renderUser([usersToShow[userToShowIndex]], false, 'favoriteTeacher')
@@ -233,31 +228,30 @@ export function teacherInfoPopUp(usersToShow) {
 
           // renderUser(usersToShow);
           // console.log(userToShow);
-        })
+        });
         const toggleMapButton = document.getElementById('toggleMapButton');
         toggleMapButton.addEventListener('click', () => {
-          console.log('click')
+          console.log('click');
           toggleMap(userToShow);
-        })
+        });
       }
     } catch (e) {
     }
-  })
-
+  });
 }
 
 export function filterTeachers(usersToFilter) {
-  const filterAge = document.getElementById("filter-age");
-  const filterRegion = document.getElementById("filter-region");
-  const filterSex = document.getElementById("filter-sex");
-  const filterCheckboxPhoto = document.getElementById("filter-checkbox-photo");
-  const filterOnlyFavorites = document.getElementById("filter-only-favorites");
+  const filterAge = document.getElementById('filter-age');
+  const filterRegion = document.getElementById('filter-region');
+  const filterSex = document.getElementById('filter-sex');
+  const filterCheckboxPhoto = document.getElementById('filter-checkbox-photo');
+  const filterOnlyFavorites = document.getElementById('filter-only-favorites');
   const searchInput = document.getElementById('teacherSearchInput');
-  filterAge.addEventListener("change", applyFilters);
-  filterRegion.addEventListener("change", applyFilters);
-  filterSex.addEventListener("change", applyFilters);
-  filterCheckboxPhoto.addEventListener("change", applyFilters);
-  filterOnlyFavorites.addEventListener("change", applyFilters);
+  filterAge.addEventListener('change', applyFilters);
+  filterRegion.addEventListener('change', applyFilters);
+  filterSex.addEventListener('change', applyFilters);
+  filterCheckboxPhoto.addEventListener('change', applyFilters);
+  filterOnlyFavorites.addEventListener('change', applyFilters);
 
   function applyFilters() {
     const selectedCountry = filterRegion.value;
@@ -276,48 +270,46 @@ export function filterTeachers(usersToFilter) {
 }
 
 function clearFilterInputs() {
-  document.getElementById("filter-age").value = "any";
-  document.getElementById("filter-region").value = "any";
-  document.getElementById("filter-sex").value = "any";
-  document.getElementById("filter-checkbox-photo").checked = false;
-  document.getElementById("filter-only-favorites").checked = false;
+  document.getElementById('filter-age').value = 'any';
+  document.getElementById('filter-region').value = 'any';
+  document.getElementById('filter-sex').value = 'any';
+  document.getElementById('filter-checkbox-photo').checked = false;
+  document.getElementById('filter-only-favorites').checked = false;
 }
 
 export function filterStatistics(usersToSort) {
   const sortButtons = [
-    {id: "statisticsSortByName", key: "full_name"},
-    {id: "statisticsSortBySpeciality", key: "course"},
-    {id: "statisticsSortByAge", key: "age"},
-    {id: "statisticsSortByGender", key: "gender"},
-    {id: "statisticsSortByNationality", key: "country"},
+    { id: 'statisticsSortByName', key: 'full_name' },
+    { id: 'statisticsSortBySpeciality', key: 'course' },
+    { id: 'statisticsSortByAge', key: 'age' },
+    { id: 'statisticsSortByGender', key: 'gender' },
+    { id: 'statisticsSortByNationality', key: 'country' },
   ];
 
   sortButtons.forEach((buttonInfo) => {
     const button = document.getElementById(buttonInfo.id);
-    button.setAttribute("data-toggle", "true");
+    button.setAttribute('data-toggle', 'true');
 
-    button.addEventListener("click", () => {
+    button.addEventListener('click', () => {
       sortButtons.forEach((btnInfo) => {
         const btn = document.getElementById(btnInfo.id);
-        btn.classList.remove("thead-asc", "thead-desc");
+        btn.classList.remove('thead-asc', 'thead-desc');
       });
 
-      const currentToggleState = button.getAttribute("data-toggle") === "true";
-      button.setAttribute("data-toggle", !currentToggleState);
+      const currentToggleState = button.getAttribute('data-toggle') === 'true';
+      button.setAttribute('data-toggle', !currentToggleState);
 
       if (currentToggleState) {
-        button.classList.add("thead-desc");
+        button.classList.add('thead-desc');
       } else {
-        button.classList.add("thead-asc");
+        button.classList.add('thead-asc');
       }
 
       applySort(buttonInfo.key, currentToggleState);
     });
   });
 
-
   function applySort(sortBy, sortOrder) {
-
     // console.log(selectedAge);
     // console.log(selectedCountry);
     // console.log(selectedGender);
@@ -334,8 +326,8 @@ export function filterStatistics(usersToSort) {
 
 export function renderStatistics(usersToRender) {
   const statisticContainer = document.getElementById('statisticContainer');
-  let userStatisticHTML = ``;
-  usersToRender.slice(0, 10).forEach(user => {
+  let userStatisticHTML = '';
+  usersToRender.slice(0, 10).forEach((user) => {
     userStatisticHTML += `
                             <tr>
                                 <td>${user.full_name}</td>
@@ -344,26 +336,26 @@ export function renderStatistics(usersToRender) {
                                 <td>${user.gender}</td>
                                 <td>${user.country}</td>
                             </tr>`;
-  })
+  });
   statisticContainer.innerHTML = userStatisticHTML;
   renderPagination(usersToRender);
   renderCharts(usersToRender);
 }
 
-let paginationState = {
+const paginationState = {
   currentPage: 0,
-  usersOnPage: 10
-}
+  usersOnPage: 10,
+};
 
 export function renderPagination(userToPagination) {
   const paginationContainer = document.getElementById('paginationContainer');
-  paginationContainer.innerHTML = ``;
+  paginationContainer.innerHTML = '';
   const pageAmount = (userToPagination.length / paginationState.usersOnPage);
   for (let i = 0; i < pageAmount; i++) {
-    const paginationElement = document.createElement("li");
+    const paginationElement = document.createElement('li');
     paginationElement.textContent = `${i + 1}`;
-    if(i === paginationState.currentPage){
-      paginationElement.classList.add('current__page')
+    if (i === paginationState.currentPage) {
+      paginationElement.classList.add('current__page');
     }
     addClickListenerPagination(paginationElement, i);
     paginationContainer.appendChild(paginationElement);
@@ -373,21 +365,21 @@ export function renderPagination(userToPagination) {
     paginationElement.addEventListener('click', () => {
       paginationState.currentPage = page;
       const paginationSlice = paginationState.currentPage * paginationState.usersOnPage;
-      const userToRender = userToPagination.slice(paginationSlice, paginationSlice + paginationState.usersOnPage)
+      const userToRender = userToPagination.slice(paginationSlice, paginationSlice + paginationState.usersOnPage);
       renderStatistics(userToRender);
       renderPagination(userToPagination);
-    })
+    });
   }
 }
 
 export function addTeacher(usersToExpand) {
   const popUpContainer = document.getElementById('popUpContainer');
-  const addTeacherButtons = document.querySelectorAll('.add-teacher-button')
-  addTeacherButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        document.body.classList.toggle("body-overflow");
-        popUpContainer.classList.toggle("none");
-        popUpContainer.innerHTML = `
+  const addTeacherButtons = document.querySelectorAll('.add-teacher-button');
+  addTeacherButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      document.body.classList.toggle('body-overflow');
+      popUpContainer.classList.toggle('none');
+      popUpContainer.innerHTML = `
     <div class="add-teacher__popup">
         <div class="add-teacher__title">
             <h3 class="title-3">Add Teacher</h3>
@@ -461,100 +453,97 @@ export function addTeacher(usersToExpand) {
         </form>
     </div>`;
 
-        const addNewTeacherButton = document.getElementById('add-new-teacher');
+      const addNewTeacherButton = document.getElementById('add-new-teacher');
 
-        addNewTeacherButton.addEventListener('click', (event) => {
-            event.preventDefault();
-            const name = document.getElementById("add-teacher-name").value;
-            const speciality = document.getElementById("add-teacher-speciality").value;
-            const country = document.getElementById("add-teacher-country").value;
-            const city = document.getElementById("add-teacher-city").value;
-            const email = document.getElementById("add-teacher-email").value;
-            const phone = document.getElementById("add-teacher-phone").value;
-            const birthdate = document.getElementById("add-teacher-birthdate").value;
-            const sex = document.querySelector('input[name="sex"]').value;
-            const color = document.getElementById("color").value;
-            const notes = document.getElementById("add-teacher-notes").value;
+      addNewTeacherButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        const name = document.getElementById('add-teacher-name').value;
+        const speciality = document.getElementById('add-teacher-speciality').value;
+        const country = document.getElementById('add-teacher-country').value;
+        const city = document.getElementById('add-teacher-city').value;
+        const email = document.getElementById('add-teacher-email').value;
+        const phone = document.getElementById('add-teacher-phone').value;
+        const birthdate = document.getElementById('add-teacher-birthdate').value;
+        const sex = document.querySelector('input[name="sex"]').value;
+        const color = document.getElementById('color').value;
+        const notes = document.getElementById('add-teacher-notes').value;
 
-            const newTeacher = {
-              'full_name': name,
-              'course': speciality,
-              'country': country,
-              'city': city,
-              'email': email,
-              'phone': phone,
-              'b_date': birthdate,
-              "gender": sex,
-              'bg_color': color,
-              'note': notes || 'Note',
-            };
+        const newTeacher = {
+          full_name: name,
+          course: speciality,
+          country,
+          city,
+          email,
+          phone,
+          b_date: birthdate,
+          gender: sex,
+          bg_color: color,
+          note: notes || 'Note',
+        };
 
-            function validateNewTeacher(newTeacher) {
-              const regExpEmail = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-              if (!regExpEmail.test(newTeacher.email)) {
-                return 'Email is not valid.';
-              }
-              const currentDate = new Date();
-              const birthdate = new Date(newTeacher.b_date);
-              console.log(birthdate);
-              const eighteenYearsAgo = new Date(
-                currentDate.getFullYear() - 18,
-                currentDate.getMonth(),
-                currentDate.getDate()
-              );
-              if (birthdate > eighteenYearsAgo) {
-                return 'You have to be 18 years old at least.';
-              }
-              if (newTeacher.full_name === '') {
-                return 'Name is empty';
-              }
-              if (newTeacher.gender === '') {
-                return 'Gender is empty';
-              }
-              if (newTeacher.city === '') {
-                return 'City is empty';
-              }
-              if (newTeacher.country === '') {
-                return 'Country is empty';
-              }
-              if (newTeacher.phone === '') {
-                return 'Phone is empty';
-              }
-
-              return true;
-            }
-
-            let check = validateNewTeacher(newTeacher);
-            if (check === true) {
-
-              // console.log([newTeacher])
-              usersToExpand.push(newTeacher);
-              // postNewTeacher(newTeacher); // json-server --watch src/db.json
-              renderUser([newTeacher], true);
-              renderStatistics(usersToExpand);
-              filterStatistics(usersToExpand);
-              clearFilterInputs();
-
-              popUpContainer.innerHTML = '';
-              popUpContainer.classList.toggle("none");
-              document.body.classList.toggle("body-overflow");
-            } else {
-              alert(check);
-            }
+        function validateNewTeacher(newTeacher) {
+          const regExpEmail = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+          if (!regExpEmail.test(newTeacher.email)) {
+            return 'Email is not valid.';
           }
-        )
-        const closeButton = document.getElementById("closeButton");
-        closeButton.addEventListener('click', () => {
+          const currentDate = new Date();
+          const birthdate = new Date(newTeacher.b_date);
+          console.log(birthdate);
+          const eighteenYearsAgo = new Date(
+            currentDate.getFullYear() - 18,
+            currentDate.getMonth(),
+            currentDate.getDate(),
+          );
+          if (birthdate > eighteenYearsAgo) {
+            return 'You have to be 18 years old at least.';
+          }
+          if (newTeacher.full_name === '') {
+            return 'Name is empty';
+          }
+          if (newTeacher.gender === '') {
+            return 'Gender is empty';
+          }
+          if (newTeacher.city === '') {
+            return 'City is empty';
+          }
+          if (newTeacher.country === '') {
+            return 'Country is empty';
+          }
+          if (newTeacher.phone === '') {
+            return 'Phone is empty';
+          }
+
+          return true;
+        }
+
+        const check = validateNewTeacher(newTeacher);
+        if (check === true) {
+          // console.log([newTeacher])
+          usersToExpand.push(newTeacher);
+          // postNewTeacher(newTeacher); // json-server --watch src/db.json
+          renderUser([newTeacher], true);
+          renderStatistics(usersToExpand);
+          filterStatistics(usersToExpand);
+          clearFilterInputs();
+
           popUpContainer.innerHTML = '';
-          popUpContainer.classList.toggle("none");
-          document.body.classList.toggle("body-overflow");
-        })
-      })
-    }
-  )
+          popUpContainer.classList.toggle('none');
+          document.body.classList.toggle('body-overflow');
+        } else {
+          alert(check);
+        }
+      });
+      const closeButton = document.getElementById('closeButton');
+      closeButton.addEventListener('click', () => {
+        popUpContainer.innerHTML = '';
+        popUpContainer.classList.toggle('none');
+        document.body.classList.toggle('body-overflow');
+      });
+    });
+  });
 }
 
-function postNewTeacher(data){
+function postNewTeacher(data) {
   fetch('http://localhost:3000/users', {
     method: 'POST',
     headers: {
@@ -579,9 +568,8 @@ export function renderSearchUsers(userToSearch) {
     renderUser(searchedUsers);
     filterStatistics(searchedUsers);
     renderStatistics(searchedUsers);
-  })
+  });
 }
-
 
 export function updateSlider() {
   // console.log("update")
@@ -612,21 +600,21 @@ export function updateSlider() {
 
   if (elementsOnScreen < elementAmount) {
     leftButton.addEventListener('click', () => {
-      console.log('click')
-      offset = offset - 200;
+      console.log('click');
+      offset -= 200;
       if (offset < 0) {
         offset = maxOffset;
       }
-      sliderContainer.style.left = -offset + 'px';
-    })
+      sliderContainer.style.left = `${-offset}px`;
+    });
 
     rightButton.addEventListener('click', () => {
-      console.log('click')
-      offset = offset + 200;
+      console.log('click');
+      offset += 200;
       if (offset > maxOffset) {
         offset = 0;
       }
-      sliderContainer.style.left = -offset + 'px';
-    })
+      sliderContainer.style.left = `${-offset}px`;
+    });
   }
 }
