@@ -9,7 +9,7 @@ import {
   renderStatistics,
   addTeacher,
   renderSearchUsers,
-  updateSlider
+  updateSlider, renderCharts
 } from './domOperation'
 
 fetchData();
@@ -86,6 +86,8 @@ function main(fetchedUsers){
   console.log(users);
   updateSlider();
   window.addEventListener('resize', updateSlider);
+  // renderCharts(users);
+
 
   // task3
   console.log('task 3');
