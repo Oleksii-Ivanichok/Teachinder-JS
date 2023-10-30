@@ -89,38 +89,35 @@ import _ from 'lodash';
 //   return users;
 // }
 
-
 export function formatFetchedUser(usersToFormat) {
   const courses = ['Mathematics', 'Physics', 'English', 'Computer Science', 'Dancing', 'Chess', 'Biology', 'Chemistry', 'Law', 'Art', 'Medicine', 'Statistics'];
-  const formattedUsers = _.map(usersToFormat, user => {
-    return {
-      gender: user.gender || '',
-      title: user.name.title || '',
-      full_name: `${user.name.first} ${user.name.last}` || '',
-      city: user.location.city || '',
-      state: user.location.state || '',
-      country: user.location.country || '',
-      postcode: user.location.postcode || '',
-      coordinates: {
-        latitude: user.location.coordinates.latitude || '',
-        longitude: user.location.coordinates.longitude || '',
-      },
-      timezone: {
-        offset: user.location.timezone.offset || '', description: user.location.timezone.description || '',
-      },
-      email: user.email || '',
-      b_date: user.dob.date || user.b_day,
-      age: user.dob.age || user.b_day,
-      phone: user.cell || '',
-      picture_large: user.picture.large || '',
-      picture_thumbnail: user.picture.thumbnail || '',
-      id: user.id.value || Date.now() || '',
-      bg_color: user.bg_color || '#000000',
-      favorite: user.favorite || false,
-      note: user.note || 'Note',
-      course: user.course || courses[Math.floor(Math.random() * courses.length)],
-    };
-  })
+  const formattedUsers = _.map(usersToFormat, (user) => ({
+    gender: user.gender || '',
+    title: user.name.title || '',
+    full_name: `${user.name.first} ${user.name.last}` || '',
+    city: user.location.city || '',
+    state: user.location.state || '',
+    country: user.location.country || '',
+    postcode: user.location.postcode || '',
+    coordinates: {
+      latitude: user.location.coordinates.latitude || '',
+      longitude: user.location.coordinates.longitude || '',
+    },
+    timezone: {
+      offset: user.location.timezone.offset || '', description: user.location.timezone.description || '',
+    },
+    email: user.email || '',
+    b_date: user.dob.date || user.b_day,
+    age: user.dob.age || user.b_day,
+    phone: user.cell || '',
+    picture_large: user.picture.large || '',
+    picture_thumbnail: user.picture.thumbnail || '',
+    id: user.id.value || Date.now() || '',
+    bg_color: user.bg_color || '#000000',
+    favorite: user.favorite || false,
+    note: user.note || 'Note',
+    course: user.course || courses[Math.floor(Math.random() * courses.length)],
+  }));
   return formattedUsers;
 }
 
@@ -150,12 +147,12 @@ export function validateUsers(usersToValidate) {
     const countryToPhoneCode = {
       'United States': '+1',
       'United Kingdom': '+44',
-      'Australia': '+61',
-      'Germany': '+49',
-      'Ukraine': '+380',
+      Australia: '+61',
+      Germany: '+49',
+      Ukraine: '+380',
     };
     const expectedPhoneCode = countryToPhoneCode[country];
-    if(expectedPhoneCode !== undefined){
+    if (expectedPhoneCode !== undefined) {
       const phoneCodeLength = expectedPhoneCode.length;
       const providedPhoneCode = phone.substring(0, phoneCodeLength);
       return providedPhoneCode === expectedPhoneCode;
@@ -180,15 +177,15 @@ export function validateUsers(usersToValidate) {
       .every((key) => schema[key](user[key], user));
   }
 
-  const validUsers = _.filter(usersToValidate, user => isValidUser(user));
+  const validUsers = _.filter(usersToValidate, (user) => isValidUser(user));
   return validUsers;
 }
 
 export function filterUsers(usersToFilter, country, age, gender, favorite, photo = false) {
-  const ageArray = age.split("-");
-  const startAge =  parseInt(ageArray[0]);
-  const endAge =  parseInt(ageArray[1]);
-  const filteredUsers = _.filter(usersToFilter, user => (country === 'any' || user.country === country)
+  const ageArray = age.split('-');
+  const startAge = parseInt(ageArray[0]);
+  const endAge = parseInt(ageArray[1]);
+  const filteredUsers = _.filter(usersToFilter, (user) => (country === 'any' || user.country === country)
       && (age === 'any' || user.age >= startAge && user.age <= endAge)
       && (gender === 'any' || user.gender === gender)
       && (favorite === false || user.favorite === favorite)
@@ -219,7 +216,7 @@ export function searchUsers(usersToSearch, query) {
 
   const searchedUsers = [];
 
-  _.forEach(usersToSearch, user => {
+  _.forEach(usersToSearch, (user) => {
     const matches = ['full_name', 'note', 'age'].some((param) => {
       if (param in user) {
         const paramValue = user[param].toString().toLowerCase();
@@ -243,4 +240,3 @@ export function findSearchPercent(usersToCompare, searchedUsersToCompare) {
   }
   return 0;
 }
-
