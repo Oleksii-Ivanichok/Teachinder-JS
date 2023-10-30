@@ -1,8 +1,8 @@
 import {filterUsers, searchUsers, sortUsers} from "./userOperation";
 import L from 'leaflet';
 import Chart from 'chart.js/auto';
-
 export function renderCharts(usersToCharts){
+
   const pieChartContainer = document.getElementById('pieChartContainer');
   const pieChartsHTML = `
     <div class="chart-container">
@@ -21,14 +21,28 @@ export function renderCharts(usersToCharts){
 
   const courseChart = document.getElementById('courseChart');
 
+  console.log(usersToCharts);
 
-  const myChart1 = new Chart(courseChart, {
-    type: 'bar',
+  const courseData = {};
+
+  usersToCharts.forEach((user) => {
+    const course = user.course;
+
+    if(courseData[course]) {
+      courseData[course] += 1;
+    } else {
+      courseData[course] = 1;
+    }
+  })
+
+  console.log(courseData);
+  const courseChartObject = new Chart(courseChart, {
+    type: 'pie',
     data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      labels: Object.keys(courseData),
       datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
+        label: 'amount',
+        data: Object.values(courseData),
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
@@ -37,24 +51,16 @@ export function renderCharts(usersToCharts){
           'rgba(153, 102, 255, 0.2)',
           'rgba(255, 159, 64, 0.2)'
         ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)'
-        ],
-        borderWidth: 1
       }]
     },
     options: {
-      scales: {
-        y: {
-          beginAtZero: true
+      plugins: {
+        title: {
+          display: true,
+          text: 'Speciality'
         }
       }
-    }
+    },
   });
 }
 function toggleMap(userOnMap){
@@ -568,15 +574,15 @@ export function renderSearchUsers(userToSearch) {
 
 
 export function updateSlider() {
-  console.log("update")
+  // console.log("update")
   let offset = 0;
   const sliderContainer = document.getElementById('favoriteContainer');
   const leftButton = document.getElementById('sliderLeftButton');
   const rightButton = document.getElementById('sliderRightButton');
-  console.log(sliderContainer.childElementCount);
+  // console.log(sliderContainer.childElementCount);
   const elementAmount = sliderContainer.childElementCount;
   const screenWidth = window.innerWidth;
-  console.log(screenWidth);
+  // console.log(screenWidth);
 
   let elementsOnScreen = 5;
 
@@ -590,9 +596,9 @@ export function updateSlider() {
     elementsOnScreen = 1;
   }
   const maxOffset = (elementAmount - elementsOnScreen) * 200;
-  console.log(elementsOnScreen);
+  // console.log(elementsOnScreen);
 
-  console.log(maxOffset);
+  // console.log(maxOffset);
 
   if (elementsOnScreen < elementAmount) {
     leftButton.addEventListener('click', () => {

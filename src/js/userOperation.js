@@ -171,8 +171,8 @@ export function validateUsers(usersToValidate) {
   }
 
   const errors = usersToValidate.map((user) => validate(user));
-  console.log('Error list:');
-  console.log(errors);
+  // console.log('Error list:');
+  // console.log(errors);
 
   function isValidUser(user) {
     return Object

@@ -19,7 +19,7 @@ async function fetchData() {
     let response = await fetch(url);
     if (response.ok) {
       let result = await response.json();
-      console.log(result);
+      // console.log(result);
       main(result.results);
     } else {
       console.error('Network response was not ok.');
@@ -32,15 +32,15 @@ async function fetchData() {
 function main(fetchedUsers){
 
   // task 1
-  console.log(fetchedUsers);
+  // console.log(fetchedUsers);
 
-  console.log('task 1');
+  // console.log('task 1');
   // let users = mergeAndFormatUser(fetchedUsers, fetchedUsers);
   let users = formatFetchedUser(fetchedUsers)
-  console.log(users);
+  // console.log(users);
 
 // task2
-  console.log('task 2');
+//   console.log('task 2');
   const correctUser = {
     "gender": "Male",
     "title": "Mr",
@@ -73,8 +73,8 @@ function main(fetchedUsers){
 
   const validUsers = validateUsers(users);
   users = validUsers;
-  console.log('validUsers:');
-  console.log(validUsers);
+  // console.log('validUsers:');
+  // console.log(validUsers);
 
   renderUser(users);
   teacherInfoPopUp(users);
@@ -83,37 +83,37 @@ function main(fetchedUsers){
   filterStatistics(users);
   addTeacher(users);
   renderSearchUsers(users);
-  console.log(users);
+  // console.log(users);
   updateSlider();
   window.addEventListener('resize', updateSlider);
   // renderCharts(users);
 
 
   // task3
-  console.log('task 3');
+  // console.log('task 3');
 
 
   const filteredUsers = filterUsers(users, 'Germany', '18-40', 'female', false);
-  console.log(filteredUsers);
+  // console.log(filteredUsers);
 
 // task4
-  console.log('task 4');
+//   console.log('task 4');
   const sortBy = 'age';
   const sortOrder = true;
   const sortedUsers = sortUsers(users, sortBy, sortOrder);
-  console.log(sortedUsers);
+  // console.log(sortedUsers);
 
 // task5
-  console.log('task 5');
+//   console.log('task 5');
   const searchQuery = 'Aa';
 
   const searchedUsers = searchUsers(users, searchQuery);
-  console.log(searchedUsers);
+  // console.log(searchedUsers);
 
 // task 6
-  console.log('task 6');
+//   console.log('task 6');
   const searchPercent = findSearchPercent(users, searchUsers(users, searchQuery));
-  console.log(`${searchPercent}%`);
+  // console.log(`${searchPercent}%`);
 
 }
 
