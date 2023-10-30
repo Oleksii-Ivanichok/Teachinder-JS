@@ -4,6 +4,7 @@ import Chart from 'chart.js/auto';
 function renderCharts(usersToCharts) {
   const params = ['course', 'age', 'gender', 'country'];
   const pieChartContainer = document.getElementById('pieChartContainer');
+  pieChartContainer.innerHTML = ``;
 
   params.forEach((param) => {
     const chartElement = document.createElement('div');
@@ -133,7 +134,7 @@ export function teacherInfoPopUp(usersToShow) {
         // console.log(userId);
         const userToShow = usersToShow.find(user => user.email === userId);
         const userToShowIndex = usersToShow.findIndex(user => user.email === userId);
-        // console.log(userToShow);
+        console.log(userToShow.b_date);
         let favoriteStar;
         if (userToShow.favorite) {
           favoriteStar = 'images/star.svg'
@@ -161,6 +162,7 @@ export function teacherInfoPopUp(usersToShow) {
                         <p class="teacher-info__age-sex">${userToShow.age}, ${userToShow.gender}</p>
                         <p class="teacher-info__email">${userToShow.email}</p>
                         <p class="teacher-info__number">${userToShow.phone}</p>
+                        <p class="teacher-info__time-to-birthday">Days to birthday: ${userToShow.phone}</p>
                     </div>
                     <button>
                         <img class="teacher-info__add-to-favorite" src=${favoriteStar} alt="add to favorite" id="addToFavoriteButton">

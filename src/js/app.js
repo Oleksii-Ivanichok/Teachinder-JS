@@ -34,10 +34,10 @@ function main(fetchedUsers){
   // task 1
   // console.log(fetchedUsers);
 
-  // console.log('task 1');
+  console.log('task 1');
   // let users = mergeAndFormatUser(fetchedUsers, fetchedUsers);
   let users = formatFetchedUser(fetchedUsers)
-  // console.log(users);
+  console.log(users);
 
 // task2
 //   console.log('task 2');
@@ -73,8 +73,8 @@ function main(fetchedUsers){
 
   const validUsers = validateUsers(users);
   users = validUsers;
-  // console.log('validUsers:');
-  // console.log(validUsers);
+  console.log('validUsers:');
+  console.log(validUsers);
 
   renderUser(users);
   teacherInfoPopUp(users);
