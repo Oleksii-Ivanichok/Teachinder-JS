@@ -1,48 +1,41 @@
 import {filterUsers, searchUsers, sortUsers} from "./userOperation";
 import L from 'leaflet';
 import Chart from 'chart.js/auto';
-export function renderCharts(usersToCharts){
-
+function renderCharts(usersToCharts) {
+  const params = ['course', 'age', 'gender', 'country'];
   const pieChartContainer = document.getElementById('pieChartContainer');
-  const pieChartsHTML = `
-    <div class="chart-container">
-      <canvas id="courseChart"></canvas>
-    </div>
-    <div class="chart-container">
-      <canvas id="ageChart"></canvas>
-    </div>
-    <div class="chart-container">
-      <canvas id="genderChart"></canvas>
-    </div>
-    <div class="chart-container">
-      <canvas id="countryChart"></canvas>
-    </div>`;
-  pieChartContainer.innerHTML = pieChartsHTML;
 
-  const courseChart = document.getElementById('courseChart');
+  params.forEach((param) => {
+    const chartElement = document.createElement('div');
+    chartElement.className = 'chart-container';
+    pieChartContainer.appendChild(chartElement);
 
-  console.log(usersToCharts);
+    const canvasElement = document.createElement('canvas');
+    chartElement.appendChild(canvasElement);
 
-  const courseData = {};
+    const data = {};
 
-  usersToCharts.forEach((user) => {
-    const course = user.course;
+    usersToCharts.forEach((user) => {
+      const paramValue = user[param];
+      if (data[paramValue]) {
+        data[paramValue] += 1;
+      } else {
+        data[paramValue] = 1;
+      }
+    });
 
-    if(courseData[course]) {
-      courseData[course] += 1;
-    } else {
-      courseData[course] = 1;
-    }
-  })
+    createPieChart(canvasElement, data, param);
+  });
+}
 
-  console.log(courseData);
-  const courseChartObject = new Chart(courseChart, {
+function createPieChart(chartElement, data, title) {
+  const chartObject = new Chart(chartElement, {
     type: 'pie',
     data: {
-      labels: Object.keys(courseData),
+      labels: Object.keys(data),
       datasets: [{
         label: 'amount',
-        data: Object.values(courseData),
+        data: Object.values(data),
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
@@ -57,9 +50,9 @@ export function renderCharts(usersToCharts){
       plugins: {
         title: {
           display: true,
-          text: 'Speciality'
-        }
-      }
+          text: title,
+        },
+      },
     },
   });
 }
@@ -333,7 +326,7 @@ export function renderStatistics(usersToRender) {
   })
   statisticContainer.innerHTML = userStatisticHTML;
   renderPagination(usersToRender);
-  renderCharts(usersToRender);
+  // renderCharts(usersToRender);
 }
 
 function renderPieChartStatistic(userToStatistics){
