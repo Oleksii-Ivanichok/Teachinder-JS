@@ -25,37 +25,38 @@ function renderCharts(usersToCharts) {
     });
 
     createPieChart(canvasElement, data, param);
+    function createPieChart(chartElement, data, title) {
+      const chartObject = new Chart(chartElement, {
+        type: 'pie',
+        data: {
+          labels: Object.keys(data),
+          datasets: [{
+            label: 'amount',
+            data: Object.values(data),
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)'
+            ],
+          }]
+        },
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: title,
+            },
+          },
+        },
+      });
+    }
   });
 }
 
-function createPieChart(chartElement, data, title) {
-  const chartObject = new Chart(chartElement, {
-    type: 'pie',
-    data: {
-      labels: Object.keys(data),
-      datasets: [{
-        label: 'amount',
-        data: Object.values(data),
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)'
-        ],
-      }]
-    },
-    options: {
-      plugins: {
-        title: {
-          display: true,
-          text: title,
-        },
-      },
-    },
-  });
-}
+
 function toggleMap(userOnMap){
   console.log('toggleMap');
   const mapContainer = document.getElementById('mapContainer');
@@ -326,13 +327,9 @@ export function renderStatistics(usersToRender) {
   })
   statisticContainer.innerHTML = userStatisticHTML;
   renderPagination(usersToRender);
-  // renderCharts(usersToRender);
+  renderCharts(usersToRender);
 }
 
-function renderPieChartStatistic(userToStatistics){
-
-
-}
 let paginationState = {
   currentPage: 0,
   usersOnPage: 10
