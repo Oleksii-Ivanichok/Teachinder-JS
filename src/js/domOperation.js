@@ -1,5 +1,102 @@
 import {filterUsers, searchUsers, sortUsers} from "./userOperation";
+import L from 'leaflet';
+import Chart from 'chart.js/auto';
+import * as dayjs from 'dayjs'
 
+function calculateDaysToNextBirthDay(birthDate) {
+  // console.log(birthDate);
+  const currentDate = dayjs();
+  // console.log(currentDate);
+  const nextBirthday = dayjs(birthDate).year(currentDate.year());
+  console.log(nextBirthday);
+  if (nextBirthday.isBefore(currentDate)) {
+    return nextBirthday.add(1, 'year').diff(currentDate, 'day');
+  }
+  console.log(nextBirthday);
+
+  return nextBirthday.diff(currentDate, 'day');
+}
+function renderCharts(usersToCharts) {
+  const params = ['course', 'age', 'gender', 'country'];
+  const pieChartContainer = document.getElementById('pieChartContainer');
+  pieChartContainer.innerHTML = ``;
+
+  params.forEach((param) => {
+    const chartElement = document.createElement('div');
+    chartElement.className = 'chart-container';
+    pieChartContainer.appendChild(chartElement);
+
+    const canvasElement = document.createElement('canvas');
+    chartElement.appendChild(canvasElement);
+
+    const data = {};
+
+    usersToCharts.forEach((user) => {
+      const paramValue = user[param];
+      if (data[paramValue]) {
+        data[paramValue] += 1;
+      } else {
+        data[paramValue] = 1;
+      }
+    });
+
+    createPieChart(canvasElement, data, param);
+    function createPieChart(chartElement, data, title) {
+      const chartObject = new Chart(chartElement, {
+        type: 'pie',
+        data: {
+          labels: Object.keys(data),
+          datasets: [{
+            label: 'amount',
+            data: Object.values(data),
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)'
+            ],
+          }]
+        },
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: title,
+            },
+          },
+        },
+      });
+    }
+  });
+}
+
+
+function toggleMap(userOnMap){
+  console.log('toggleMap');
+  const mapContainer = document.getElementById('mapContainer');
+  console.log(mapContainer);
+  mapContainer.classList.toggle("none");
+  mapContainer.innerHTML = '';
+  if(!mapContainer.classList.contains("none")) {
+    const mapContainerHTML = `<div id="map" class="map__container"></div>`;
+    mapContainer.insertAdjacentHTML('beforeend', mapContainerHTML);
+    const map = L.map('map').setView([userOnMap.coordinates.latitude, userOnMap.coordinates.longitude], 13);
+
+// Add a tile layer (you can change the URL to your preferred map provider)
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+// Add a marker for the teacher's location
+    L.marker([userOnMap.coordinates.latitude, userOnMap.coordinates.longitude]).addTo(map)
+      .bindPopup(`${userOnMap.full_name}`)
+      .openPopup();
+  }
+
+}
 export function renderUser(usersToRender, addToEnd = false, place = "topTeachers") {
   let userContainer;
   if (place === "topTeachers") {
@@ -41,6 +138,8 @@ export function renderUser(usersToRender, addToEnd = false, place = "topTeachers
   }
 }
 
+
+
 export function teacherInfoPopUp(usersToShow) {
   const popUpContainer = document.getElementById('popUpContainer');
   window.addEventListener('click', event => {
@@ -52,7 +151,8 @@ export function teacherInfoPopUp(usersToShow) {
         // console.log(userId);
         const userToShow = usersToShow.find(user => user.email === userId);
         const userToShowIndex = usersToShow.findIndex(user => user.email === userId);
-        // console.log(userToShow);
+        // console.log(userToShow.b_date);
+        const daysToNextBirthDay = calculateDaysToNextBirthDay(new Date (userToShow.b_date));
         let favoriteStar;
         if (userToShow.favorite) {
           favoriteStar = 'images/star.svg'
@@ -60,7 +160,9 @@ export function teacherInfoPopUp(usersToShow) {
           favoriteStar = 'images/empty-star.svg'
         }
         popUpContainer.classList.toggle("none");
-        const teacherInfoHTML = `<div class="teacher-info__popup">
+        const teacherInfoHTML = `
+    <div class="none" id="mapContainer"></div>
+        <div class="teacher-info__popup">
         <div class="add-teacher__title">
             <h3 class="title-3">Teacher Info</h3>
             <button id="closeButton">
@@ -78,6 +180,7 @@ export function teacherInfoPopUp(usersToShow) {
                         <p class="teacher-info__age-sex">${userToShow.age}, ${userToShow.gender}</p>
                         <p class="teacher-info__email">${userToShow.email}</p>
                         <p class="teacher-info__number">${userToShow.phone}</p>
+                        <p class="teacher-info__time-to-birthday">Days to birthday: ${daysToNextBirthDay}</p>
                     </div>
                     <button>
                         <img class="teacher-info__add-to-favorite" src=${favoriteStar} alt="add to favorite" id="addToFavoriteButton">
@@ -85,7 +188,7 @@ export function teacherInfoPopUp(usersToShow) {
                 </div>
             </div>
             <p class="teacher-info__description">${userToShow.note}</p>
-            <a href="#"><p class="teacher-info__map">toggle map</p></a>
+            <a href="#"><p class="teacher-info__map" id="toggleMapButton">toggle map</p></a>
         </div>
     </div>`;
         // popUpContainer.insertAdjacentHTML('beforeend', teacherInfoHTML);
@@ -130,6 +233,11 @@ export function teacherInfoPopUp(usersToShow) {
 
           // renderUser(usersToShow);
           // console.log(userToShow);
+        })
+        const toggleMapButton = document.getElementById('toggleMapButton');
+        toggleMapButton.addEventListener('click', () => {
+          console.log('click')
+          toggleMap(userToShow);
         })
       }
     } catch (e) {
@@ -239,6 +347,7 @@ export function renderStatistics(usersToRender) {
   })
   statisticContainer.innerHTML = userStatisticHTML;
   renderPagination(usersToRender);
+  renderCharts(usersToRender);
 }
 
 let paginationState = {
@@ -475,15 +584,15 @@ export function renderSearchUsers(userToSearch) {
 
 
 export function updateSlider() {
-  console.log("update")
+  // console.log("update")
   let offset = 0;
   const sliderContainer = document.getElementById('favoriteContainer');
   const leftButton = document.getElementById('sliderLeftButton');
   const rightButton = document.getElementById('sliderRightButton');
-  console.log(sliderContainer.childElementCount);
+  // console.log(sliderContainer.childElementCount);
   const elementAmount = sliderContainer.childElementCount;
   const screenWidth = window.innerWidth;
-  console.log(screenWidth);
+  // console.log(screenWidth);
 
   let elementsOnScreen = 5;
 
@@ -497,9 +606,9 @@ export function updateSlider() {
     elementsOnScreen = 1;
   }
   const maxOffset = (elementAmount - elementsOnScreen) * 200;
-  console.log(elementsOnScreen);
+  // console.log(elementsOnScreen);
 
-  console.log(maxOffset);
+  // console.log(maxOffset);
 
   if (elementsOnScreen < elementAmount) {
     leftButton.addEventListener('click', () => {

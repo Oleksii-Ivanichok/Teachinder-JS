@@ -1,3 +1,4 @@
+import _ from 'lodash';
 // export function mergeAndFormatUser(randomUserListMock, additionalUsersList) {
 //   const courses = ['Mathematics', 'Physics', 'English', 'Computer Science', 'Dancing', 'Chess', 'Biology', 'Chemistry', 'Law', 'Art', 'Medicine', 'Statistics'];
 //
@@ -89,10 +90,9 @@
 // }
 
 
-
 export function formatFetchedUser(usersToFormat) {
   const courses = ['Mathematics', 'Physics', 'English', 'Computer Science', 'Dancing', 'Chess', 'Biology', 'Chemistry', 'Law', 'Art', 'Medicine', 'Statistics'];
-  const formattedUsers = usersToFormat.map(user => {
+  const formattedUsers = _.map(usersToFormat, user => {
     return {
       gender: user.gender || '',
       title: user.name.title || '',
@@ -163,16 +163,16 @@ export function validateUsers(usersToValidate) {
     return false;
   }
 
-  function validate(user) {
-    return Object
-      .keys(schema)
-      .filter((key) => !schema[key](user[key], user))
-      .map((key) => new Error(`${key}: ${user[key]} is invalid.`));
-  }
+  // function validate(user) {
+  //   return Object
+  //     .keys(schema)
+  //     .filter((key) => !schema[key](user[key], user))
+  //     .map((key) => new Error(`${key}: ${user[key]} is invalid.`));
+  // }
 
-  const errors = usersToValidate.map((user) => validate(user));
-  console.log('Error list:');
-  console.log(errors);
+  // const errors = usersToValidate.map((user) => validate(user));
+  // console.log('Error list:');
+  // console.log(errors);
 
   function isValidUser(user) {
     return Object
@@ -180,7 +180,7 @@ export function validateUsers(usersToValidate) {
       .every((key) => schema[key](user[key], user));
   }
 
-  const validUsers = usersToValidate.filter((user) => isValidUser(user));
+  const validUsers = _.filter(usersToValidate, user => isValidUser(user));
   return validUsers;
 }
 
@@ -188,8 +188,7 @@ export function filterUsers(usersToFilter, country, age, gender, favorite, photo
   const ageArray = age.split("-");
   const startAge =  parseInt(ageArray[0]);
   const endAge =  parseInt(ageArray[1]);
-  const filteredUsers = usersToFilter
-    .filter((user) => (country === 'any' || user.country === country)
+  const filteredUsers = _.filter(usersToFilter, user => (country === 'any' || user.country === country)
       && (age === 'any' || user.age >= startAge && user.age <= endAge)
       && (gender === 'any' || user.gender === gender)
       && (favorite === false || user.favorite === favorite)
@@ -220,7 +219,7 @@ export function searchUsers(usersToSearch, query) {
 
   const searchedUsers = [];
 
-  usersToSearch.forEach((user) => {
+  _.forEach(usersToSearch, user => {
     const matches = ['full_name', 'note', 'age'].some((param) => {
       if (param in user) {
         const paramValue = user[param].toString().toLowerCase();
